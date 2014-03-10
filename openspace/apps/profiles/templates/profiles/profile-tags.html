@@ -1,0 +1,14 @@
+<div class="hiddenToggle box gray" id="profile-tags{{ profile.id }}">
+    <div class="heading">
+        <h3>[ + ] tags</h3>
+    </div>
+        
+    <div class="content">
+        <form class="formal" id="{{ profile.id }}_profile_tag_form" method="Post" action="{% url 'profiles:addProfileTags' profile.id %}">
+            {% csrf_token %}{% for field in profile_tag_form %}<div id="{{ profile.id }}_profile_new_tags">{{ field }}</div>{% endfor %}
+            <input type="submit" class="button" value="add tags" />
+        </form>
+        <div class="clear"></div>
+        <p class="small justify mono">{% for tag in tags %}<a data-id="{{ profile.id }}" data-tag="{{ tag.name|lower }}" class="profileTag">{{ tag.name|lower }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    </div>
+</div>

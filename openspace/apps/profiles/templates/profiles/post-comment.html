@@ -1,0 +1,12 @@
+<div class="hiddenToggle box gray" id="leave-comment{{ post.id }}">
+    <div class="heading">
+        <h3>[ + ] {{ post.date_published }}</h3>
+    </div>
+        
+    <div class="content">
+        <form id="{{post.id}}" class="formal" method="Post" action="{%url 'profiles:addComment' profile.id post.id %}">
+            {% csrf_token %}{% for field in comment_form %}<div id="{{ post.id }}_comment">{{ field }}</div>{% endfor %}
+            <input type="submit" class="button" value="add comment" />
+        </form>
+    </div>
+</div>

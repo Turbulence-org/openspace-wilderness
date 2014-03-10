@@ -1,0 +1,6 @@
+{% extends 'profiles/profile-base.html' %}
+{% block pagetitle %} {{ post.date_published }}{% endblock %}
+{% block profile_meat %}
+{% include 'profiles/post-display.html' %}
+{% include 'profiles/view-all-posts.html' %}
+{% endblock %}

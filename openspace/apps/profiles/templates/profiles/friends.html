@@ -1,0 +1,21 @@
+{% extends 'profiles/profile-base.html' %}
+{% block title %}{{ profile.fullName }}'s  [ friends ]{% endblock %}
+{% block profile_meat %}
+<div id="allFriends" class="box">
+    <div class="heading">
+        <h3>{{ profile.fullName }}'s friends [ {{ profile.decentFriends.count }} ]</h3>
+    </div>
+    
+    <div class="content">
+        {% if profile.decentFriends %}{% for friend in profile.decentFriends %}<div class="innerListing">
+            <a href="{% url 'profiles:single' friend.id %}"><img class="jsFade icon allRound" src="{{ STATIC_URL }}{{ friend.prettyIcon }}" alt="friend icon" /></a>
+            <h5><a href="{% url 'profiles:single' friend.id %}">{{ friend.fullName }}</a></h5>
+            <h5><span class="light"><em>{{ friend.last_login }}</em></span></h5>
+            <div class="clear"></div>
+        </div>{% endfor %}
+        <div class="clear"></div>
+        {% else %}<p class="vCenter">[ {{ profile.fullName }} ] has no friends</p>{% endif %}
+    </div>
+</div>
+{% include 'profiles/view-all-posts.html' %}
+{% endblock %}

@@ -1,0 +1,230 @@
+from django.db import models
+from django.utils import timezone
+from apps.tags.models import Tag
+from libs.siteEnums import Gender, Species
+from random import randint
+import os, fnmatch
+
+def directoryImageTop(species):
+    """Returns int for the amount of images in a given species folder for assignment."""
+    dirpath = 'static/profiles/' + species + '/'
+    return len(fnmatch.filter(os.listdir(dirpath), '*jpg')) / 2
+
+
+class Profile(models.Model):
+    """Profile objects are the primary object employed in the openspace wilderness.
+    
+    Profiles may have a profile image, an icon, and their related data
+    + may have sets of friends containing Profile objects
+    + may have sets of tags containing Tag objects
+    + have a one-to-one relationship with Post objects
+    
+    Required assignments:
+    fname, lname, gender, age
+    
+    Optional assignments:
+    location, blog_url, blog_id, last_login, friends, img_number, tags
+    
+    Default assignments:
+    interest = 0
+    energy = 1
+    visible = True
+    species = Species.abandoned
+    """
+    
+    position = models.PositiveIntegerField(max_length=9, default=1)
+    fname = models.CharField('First Name', max_length=35)
+    lname = models.CharField('Last Name', max_length=35)
+    gender = models.PositiveIntegerField(max_length=2, default=Gender.female)
+    age = models.CharField(max_length=5)
+    location = models.CharField(max_length=75, blank=True)
+    blog_url = models.URLField(blank=True)
+    blog_id = models.CharField(max_length=5, blank=True)
+    last_login = models.DateField('last login', blank=True, null=True)
+    friends = models.ManyToManyField('self', blank=True)
+    img_number = models.PositiveIntegerField(max_length=4, blank=True, null=True)
+    tags = models.ManyToManyField(Tag, blank=True)
+    interest = models.PositiveIntegerField(max_length=5, default=0)
+    energy = models.PositiveIntegerField(max_length=3, default=1)
+    visible = models.BooleanField(default=True)
+    species = models.PositiveIntegerField(max_length=1, default=Species.abandoned)
+    
+    @property
+    def fullName(self):
+        return self.fname + ' ' + self.lname
+    
+    @property
+    def sex(self):
+        if self.gender == Gender.female:
+            return 'female'
+        else:
+            return 'male'
+    
+    @property
+    def imageString(self):
+        return str(self.img_number)
+    
+    @property
+    def interestString(self):
+        return str(self.interest)
+    
+    @property
+    def energyString(self):
+        return str(self.energy)
+            
+    @property
+    def speciesReadable(self):
+        if self.species == Species.system:
+            return 'system'
+        elif self.species == Species.visitor:
+            return 'visitor'
+        elif self.species == Species.predator:
+            return 'predator'
+        elif self.species == Species.forager:
+            return 'forager'
+        elif self.species == Species.dead:
+            return 'dead'
+        else:
+            return 'abandoned'
+        
+    @property
+    def isActive(self):
+        if self.species == Species.predator or self.species == Species.forager:
+            return True
+    
+    @property
+    def isPredator(self):
+        if self.species == Species.predator:
+            return True
+    
+    @property
+    def isForager(self):
+        if self.species == Species.forager:
+            return True
+    
+    @property
+    def isDead(self):
+        if self.species == Species.dead:
+            return True
+    
+    @property
+    def fitUrl(self):
+        if len(self.blog_url) > 50:
+            return self.blog_url[7:]
+        return self.blog_url
+    
+    @property
+    def prettyPic(self):
+        return 'profiles/' + self.speciesReadable + '/profilepic-' + self.imageString + '.jpg'
+    
+    @property
+    def prettyIcon(self):
+        return 'profiles/' + self.speciesReadable + '/icon-' + self.imageString + '.jpg'
+    
+    @property
+    def decentFriends(self):
+        return self.friends.filter(visible=True).order_by('lname')
+    
+    @property
+    def bestFriends(self):
+        return self.decentFriends[:12]
+    
+    @property
+    def topTags(self):
+        return self.tags.all().order_by('-interest')[:8]
+    
+    @property
+    def recentActivity(self):
+        return self.post_set.all().order_by('-date_published')[:3]
+        
+    def __unicode__(self):
+        return self.fullName
+        
+    def drain(self):
+        self.energy -= 1
+        if self.energy <= 0:
+            self.die()
+        self.save()
+    
+    def die(self):
+        self.species = Species.dead
+        self.energy = 0
+        self.visible = True
+        self.last_login = timezone.now() 
+        self.img_number = randint(1, directoryImageTop(self.speciesReadable))
+        self.save()
+
+
+class Post(models.Model):
+    """Post objects contain content from recovered blogger blogs or activity from the active Profile types
+    
+    Required assignments:
+    post_profile = Profile object (one-to-one relationship), post_content
+    
+    Optional assignments:
+    tags
+    
+    Default assignments:
+    date_published = timezone.now(), interest = 0
+    """
+
+    post_profile = models.ForeignKey(Profile)
+    date_published = models.DateTimeField('date published',
+        default=timezone.now())
+    post_content = models.TextField()
+    tags = models.ManyToManyField(Tag, blank=True)
+    interest = models.PositiveIntegerField(max_length=5, default=0)
+    just_posted = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-date_published']
+        
+    @property
+    def postProfileName(self):
+        return self.post_profile.fullName
+    
+    @property
+    def fitContent(self):
+        return self.post_content[:300]
+    
+    @property
+    def interestString(self):
+        return str(self.interest)
+    
+    @property
+    def justPosted(self):
+        if self.just_posted:
+            self.just_posted = False
+            self.save()
+            return True
+    
+    def __unicode__(self):
+        return str(self.post_profile) + ' / ' + self.post_content[:11]
+
+
+class Comment(models.Model):
+    """Comments are short content that can be created by a Profile and attached to a Post
+    
+    Required assignments:
+    comment_profile, comment_post, comment_content
+    
+    Default assignments:
+    date_published = timezone.now()
+    """
+
+    comment_profile = models.ForeignKey(Profile)
+    comment_post = models.ForeignKey(Post)
+    date_published = models.DateTimeField('date published',
+        default=timezone.now())
+    comment_content = models.TextField()
+    
+    def __unicode__(self):
+        return str(self.comment_profile) + ' / ' + self.comment_content[:11]
+    
+    @property
+    def commentProfileId(self):
+        return self.comment_profile.id
+    
+    @property
+    def commentPostId(self):
+        return self.comment_post.id

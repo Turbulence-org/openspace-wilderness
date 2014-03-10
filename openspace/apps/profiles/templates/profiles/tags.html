@@ -1,0 +1,17 @@
+{% extends 'profiles/profile-base.html' %}
+{% block title %}{{ profile.fullName }}'s  [ tags ]{% endblock %}
+{% block profile_meat %}
+<div id="friends" class="box">
+    <div class="heading">
+        <h3>{{ profile.fullName }}'s tags [ {{ profile.tags.count }} ]</h3>
+    </div>
+    <div class="content">
+        {% if profile.tags.all.count > 0 %}{% for tag in profile.tags.all %}<div class="innerListing">
+            <a href="{% url 'tags:selectTrail' tag.id %}">[ {% if selected_trail == tag.name %}&ndash;{% else %}@{% endif %} ]</a> <a href="{% url 'tags:tag' tag.id %}">{{ tag.name }}</a> [ {{ tag.interest }} ]
+        </div>{% endfor %}
+        {% else %}<p class="vCenter">[ {{ profile.fullName }} ] has no tags yet</p>{% endif %}
+        <div class="clear"></div>
+    </div>
+</div>
+{% include 'profiles/view-all-posts.html' %}
+{% endblock %}

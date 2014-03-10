@@ -1,0 +1,12 @@
+{% extends 'profiles/profile-base.html' %}
+{% block profile_meat %}
+{% if posts.has_next or posts.has_previous %}<div id="pagination" class="box mono vCenter small">
+{% if posts.has_previous %}<a href="?page={{ posts.previous_page_number }}"><<</a>{% endif %}
+post page {{ posts.number }} of {{ posts.paginator.num_pages }}
+{% if posts.has_next %}<a href="?page={{ posts.next_page_number }}">>></a>{% endif %}</div>{% endif %}
+{% for post in posts %}{% include 'profiles/post-display.html' %}{% endfor %}
+{% if posts.has_next or posts.has_previous %}<div id="pagination" class="box mono vCenter small">
+{% if posts.has_previous %}<a href="?page={{ posts.previous_page_number }}"><<</a>{% endif %}
+post page {{ posts.number }} of {{ posts.paginator.num_pages }}
+{% if posts.has_next %}<a href="?page={{ posts.next_page_number }}">>></a>{% endif %}</div>{% endif %}
+{% endblock %}

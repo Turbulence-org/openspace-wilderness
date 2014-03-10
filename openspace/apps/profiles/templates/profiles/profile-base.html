@@ -1,0 +1,62 @@
+{% extends 'openspace/base.html' %}
+{% block pagetitle %} {{ profile.fullName }}{% endblock %}
+{% block body %}<div id="leftCol" class="col">
+    <div id="profile" class="box">
+        <div class="heading">
+            <a href="{% url 'profiles:single' profile.id %}"><h3>{{ profile.fullName }}</h3></a>
+            <div class="auxAct mono small">{% if not is_friend %}<a href="{% url 'profiles:makeFriend' profile.id %}">[f]</a>{% endif %}<a data-mark="profile-tags{{ profile.id }}" class="toggle">[tag]</a><a href="{% url 'profiles:profileInterest' profile.id %}">[+]</a></div>
+        </div>
+        <div class="content">
+            <div id="picWrapper">
+                <div id="profilePic">
+                    <a href="{% url 'profiles:single' profile.id %}"><img class="jsFade round" src="{{ STATIC_URL }}{{ profile.prettyPic }}" alt="profile picture" /></a>
+                </div>
+            </div>
+            <div id="profileData">
+                <h4>{{ profile.age }} years old</h4>
+                <h4><em>{{ profile.sex }}</em></h4>
+                <h4>{{ profile.location }}</h4>
+                <p class="small space"></p>
+                <h4 class="small topLine">interest [ {{ profile.interest }} ]</h4>
+                <p class="topTags small">{% for tag in profile.topTags %}<a href="{% url 'tags:tag' tag.id %}">{{ tag.name|lower }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div> <!-- END profile box -->
+    {% include 'profiles/profile-tags.html' %}
+    {% if profile.blog_url %}<div id="url" class="box gray">
+        <div class="content vCenter">
+            <strong><a href="{{ profile.blog_url }}" target="_blank">{{ profile.fitUrl }}</a></strong>
+        </div>
+    </div> <!-- END url box -->{% endif %}
+    <div id="friends" class="box">
+        <div class="heading">
+            <h3>friends</h3>
+        </div>
+        <div class="content">
+            <h4><a href="{% url 'profiles:friends' profile.id %}">view all friends</a> [ {{ profile.decentFriends.count }} ]</h4>
+            {% if profile.decentFriends %}<ul class="friends">
+            {% for friend in profile.bestFriends %}<li><a href="{% url 'profiles:single' friend.id %}"><img class="jsFade icon" src="{{ STATIC_URL }}{{ friend.prettyIcon }}" alt="friend icon" /></a></li>{% endfor %}
+            </ul>
+            {% else %}<br/><p>{{ profile.fullName }} has no friends</p>{% endif %}
+            <div class="clear"></div>
+        </div>
+    </div> <!-- END friends box -->
+    <div id="posts" class="box">
+        <div class="heading">
+            <h3>display</h3>
+        </div>
+        <div class="content">
+            <h4><a href="{% url 'profiles:single' profile.id %}">view all posts</a> [ {{ profile.post_set.count }} ]</h4>
+            <h4><a href="{% url 'profiles:profileTags' profile.id %}">view all tags</a> [ {{ profile.tags.count }} ]</h4>
+        </div>
+    </div> <!-- END posts box --> 
+</div> <!-- END lColWrap -->
+<div id="rightCol" class="col"> <!-- rColWrap -->
+    <div id="lastLogin" class="box gray">
+        <div class="content vCenter">
+            <strong><span class="light">last login</span> [ {{ profile.last_login|date:"F d, Y"}} ]</strong>
+        </div>
+    </div> <!-- END lastLogin box -->
+    {% block profile_meat %}{% endblock %} <!-- all posts -->
+</div> <!-- END rColWrap -->{% endblock %}
