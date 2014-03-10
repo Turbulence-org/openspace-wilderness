@@ -18,6 +18,7 @@ build
 celerybeat-schedule
 
 # images:
+assets/
 *.png
 *.jpg
 *.jpeg

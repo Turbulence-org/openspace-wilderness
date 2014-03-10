@@ -2,11 +2,14 @@ from apps.profiles.models import Profile
 from apps.tags.models import Tag
 from libs import navHelpers, siteHelpers
 from libs.siteEnums import Notification, Species, Tags
+from os.path import join
+from settings.common import DJANGO_ROOT
 
 def siteProcessor(request):
     background = 'bg-' + str(request.session['page_background']) + '.jpg'
     request.session['page_banner'] = siteHelpers.bannerSelect(request.session['page_banner'])
-    banner_src = 'openspace/banners/banner-' + str(request.session['page_banner']) + '.jpg'
+    #banner_src = join(DJANGO_ROOT, 'assets/media/banners/banner-' + str(request.session['page_banner']) + '.jpg')
+    banner_src = 'media/banners/banner-' + str(request.session['page_banner']) + '.jpg'
     site_context = {
         'background': background,
         'banner_src': banner_src,

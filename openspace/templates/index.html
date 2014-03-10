@@ -1,0 +1,87 @@
+{% extends 'sub-base.html' %}
+{% block pagetitle %} wilderness{% endblock %}
+{% block body %}
+{% if greeting %}<div id="help" class="box emblem head">
+    <div class="content">
+        <div class="contentBlock bigBlock">
+            <h3>[ openspace ] intro</h3>
+            <div class="mono"><p>The openspace wilderness is a virtual wilderness enclosure for an abandoned social network. The grounds of the park cover over 5,000 profiles which were culled from Blogger Blogs that have not been updated in 10+ years</p>
+            <p>There are foragers and predators that roam the park. The population of these re-colonizers is in constant flux. When the population of foragers grows too high, the park may be over-grazed and many of the virtual resources preserved within may be lost. The park requres a healthy population of predators to keep the foragers in check and preserve the wilderness.</p>
+            <p>for detailed instructions, visit the <a href="{% url 'helpPage' %}">[ help page ]</a></p></div>
+        </div>
+        
+        <div class="contentBlock smallBlock"><h3>[ park key ]</h3>
+        <p><span class="mono dark">[+]</span> - add interest<br/>
+        <span class="mono dark">[@]</span> - select trail<br/>
+        <span class="mono dark">[-]</span> - deselect trail<br/>
+        <span class="mono dark">[f]</span> - add profile as friend<br/>
+        <span class="mono dark">[tag]</span> - add tag(s)<br/>
+        <span class="mono dark">[comment]</span> - add comment</p>
+        </div>
+        
+        <div class="contentBlock center smallBlock lastR"><h3>[ park data ]</h3>
+        <p>[ {{ profile_count }} ] total profiles<br/>
+        [ {{ post_count }} ] total posts</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+{% endif %}
+
+<div class="box">
+    <div class="heading">
+        <h3>interesting locations</h3>
+    </div>
+    <div class="content">
+        {% include 'profiles-display.html' %}
+    </div>
+</div>
+
+{% if posts %}
+<div class="box">
+    <div class="heading">
+        <h3>interesting posts</h3>
+    </div>
+    <div class="content">
+        {% for post in posts %}
+        <a href="{% url 'profiles:singlePost' post.post_profile.id post.id %}"><div class="wideListing textBlock">
+            <p>{{ post.fitContent }}. . .</p>
+        </div></a> 
+        {% endfor %}
+        {% else %}
+            <p class="vCenter">nothing here, chief</p>
+        {% endif %}
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="box">
+    <div class="heading">
+        <h3>interesting trails</h3>
+    </div>
+    <div class="content">
+        {% for tag in tags %}
+            <div class="wideListing">
+            <a href="{% url 'tags:selectTrail' tag.id %}">[ {% if selected_trail == tag.name %}&ndash;{% else %}@{% endif %} ]</a> <a href="{% url 'tags:tag' tag.id %}">{{ tag.name }}</a> [ {{ tag.interest }} ]
+            </div>
+        {% endfor %}
+        <div class="clear butt"></div>
+    </div>
+</div>
+
+<div class="box">
+    <div class="heading">
+        <h3>latest comments</h3>
+    </div>
+    <div class="content">
+        {% for comment in recent_comments %}
+            <a href="{% url 'profiles:singlePost' comment.commentProfileId comment.commentPostId %}"><div class="wideListing tight">
+                <h5>{{ comment.comment_profile }}</h5>
+                <h5>{{ comment.date_published }}</h5>
+                <p>{{ comment.comment_content }}</p>
+            </div></a>
+        {% endfor %}
+        <div class="clear"></div>
+    </div>
+</div>
+{% endblock %}

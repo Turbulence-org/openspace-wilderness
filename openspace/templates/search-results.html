@@ -1,0 +1,33 @@
+{% extends 'sub-base.html' %}
+{% block pagetitle %} wilderness{% endblock %}
+{% block body %}
+{% load openspace_filters %}
+<div class="box">
+    <div class="heading">
+        <h3>[ {{ total_results }} ] result{% if total_results != 1 %}s{% endif %} for [ {{ search_query }} ]</h3>
+        {% if search_results %}<div id="pagination" class="auxAct mono small">
+            {% if search_results.has_previous %}
+            <a href="?{{queries.urlencode}}&amp;page={{ search_results.previous_page_number }}"><<</a>
+            {% endif %}
+            {{ search_results.number }} of {{ search_results.paginator.num_pages }}
+            {% if search_results.has_next %}
+            <a href="?{{queries.urlencode}}&amp;page={{ search_results.next_page_number }}">>></a>
+            {% endif %}
+        </div>{% endif %}
+    </div>
+    <div class="content">
+        {% if search_results %}
+        {% for post in search_results %}
+        <a href="{% url 'profiles:singlePost' post.post_profile.id post.id %}"><div class="wideListing textBlock">
+            <h5>{{ post.post_profile }}</h5>
+            <h5>{{ post.date_published|date:"F j, Y - fA" }}</h5>
+            <p>{{ post.post_content|featureQuery:search_query }}</p>
+        </div></a>
+        {% endfor %}
+        {% else %}
+            <p class="strong vCenter">nothing here, chief</p>
+        {% endif %}
+        <div class="clear"></div>
+    </div>
+</div>
+{% endblock %}

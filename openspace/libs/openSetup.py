@@ -33,7 +33,6 @@ def initialProfiles():
         {'fname':'Taffy', 'lname':'Virgo', 'gender':0, 'age':'48', 'location':'Carmel, Indiana', 'imgnumber':10, 'species':4, 'energy':80,},
         {'fname':'Kay', 'lname':'Skinner', 'gender':0, 'age':'29', 'location':'West Stockbridge, Massachusetts', 'imgnumber':10, 'species':4, 'energy':80,},
     ]
-
     return profileBank
     
 def initialTags():

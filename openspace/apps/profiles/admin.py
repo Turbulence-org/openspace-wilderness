@@ -1,5 +1,5 @@
 from django.contrib import admin
-from profiles.models import *
+from apps.profiles.models import *
 
 class CommentInline(admin.TabularInline):
     model = Comment

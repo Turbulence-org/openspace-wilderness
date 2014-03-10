@@ -1,6 +1,6 @@
 from django import forms
-from profiles.models import Comment
-from tags.models import Tag
+from apps.profiles.models import Comment
+from apps.tags.models import Tag
 
 class CommentForm(forms.ModelForm):
     

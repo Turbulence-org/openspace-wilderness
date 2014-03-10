@@ -1,0 +1,27 @@
+{% extends 'sub-base.html' %}
+{% block pagetitle %} credits{% endblock %}
+{% block body %}
+<div id="credits" class="box emblem head">
+    <div class="content">
+        <div class="contentBlock mono bigBlock">
+            <h3>[specifications]</h3>
+            <p>The openspace wilderness was created in the Fall/Winter of 2013/2014 for the 2014 Turbulence Net Art Exhibition</p>
+            <p>It was built with django 1.6 using python, jquery, html, and css. Every line of code aside from the django and jquery APIs was written from scratch. In addition to the actual build there are a number of utility function, adobe scripts, and other tidbits included with the git repository.</p>
+        </div>
+        
+        <div class="contentBlock smallBlock"><h3>[ links ]</h3>
+        <p><a href="#" target="_blank">openspace repository on github</a><br/>
+        <a href="http://www.turbulence.org" target="_blank">turbulence.org</a><br/>
+        <a href="http://www.andrewtlyman.com" target="_blank">andrewtlyman.com</a><br/>
+        <a href="">info@openspacewilderness.com<br/>
+        <a href="">#open____</p>
+        </div>
+        
+        <div class="contentBlock smallBlock lastR"><h3>[ data ]</h3>
+        <p>[ {{ profile_count }} ] total profiles<br/>
+        [ {{ post_count }} ] total posts</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+{% endblock %}

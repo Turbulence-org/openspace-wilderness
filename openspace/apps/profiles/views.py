@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 from apps.profiles.models import Profile, Post, Comment
 from apps.tags.models import Tag
-from profiles.forms import CommentForm, ProfileTagForm, PostTagForm
+from apps.profiles.forms import CommentForm, ProfileTagForm, PostTagForm
 from libs.siteEnums import Notification, Tags
 from libs import siteHelpers, profileHelpers
 from random import randint

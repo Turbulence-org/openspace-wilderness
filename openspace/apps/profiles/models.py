@@ -4,10 +4,12 @@ from apps.tags.models import Tag
 from libs.siteEnums import Gender, Species
 from random import randint
 import os, fnmatch
+from os.path import join
+from settings.common import DJANGO_ROOT
 
 def directoryImageTop(species):
     """Returns int for the amount of images in a given species folder for assignment."""
-    dirpath = 'static/profiles/' + species + '/'
+    dirpath = join(DJANGO_ROOT, 'assets/media/' + species + '/')
     return len(fnmatch.filter(os.listdir(dirpath), '*jpg')) / 2
 
 
@@ -115,11 +117,11 @@ class Profile(models.Model):
     
     @property
     def prettyPic(self):
-        return 'profiles/' + self.speciesReadable + '/profilepic-' + self.imageString + '.jpg'
+        return 'media/' + self.speciesReadable + '/profilepic-' + self.imageString + '.jpg'
     
     @property
     def prettyIcon(self):
-        return 'profiles/' + self.speciesReadable + '/icon-' + self.imageString + '.jpg'
+        return 'media/' + self.speciesReadable + '/icon-' + self.imageString + '.jpg'
     
     @property
     def decentFriends(self):

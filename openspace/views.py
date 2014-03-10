@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
-from profiles.models import Profile, Post, Comment
-from tags.models import Tag
-from utils import siteHelpers
+from apps.profiles.models import Profile, Post, Comment
+from apps.tags.models import Tag
+from libs import siteHelpers
 
 #404
 def openspace404(request):
@@ -21,7 +21,7 @@ def index(request):
         'greeting' : request.session['show_greeting']
     }
     request.session['show_greeting'] = False
-    return render(request, 'openspace/index.html', context)
+    return render(request, 'index.html', context)
 
 #search/
 def parkSearch(request):
@@ -51,7 +51,7 @@ def parkSearch(request):
         'total_results': rawResults.count(),
         'queries': queriesSubset
     }
-    return render(request, 'openspace/search-results.html', context)
+    return render(request, 'search-results.html', context)
 
 #info/
 def infoPage(request):
@@ -60,15 +60,15 @@ def infoPage(request):
         'post_count': Post.objects.count(),
     }
     context.update(siteHelpers.parkDataProcessor())
-    return render(request, 'openspace/info.html', context)
+    return render(request, 'info.html', context)
 
 #help/
 def helpPage(request):
-    return render(request, 'openspace/help.html')
+    return render(request, 'help.html')
 
 #credits/
 def creditsPage(request):
-    return render(request, 'openspace/credits.html')
+    return render(request, 'credits.html')
 
 #changebg/
 def changeBg(request):

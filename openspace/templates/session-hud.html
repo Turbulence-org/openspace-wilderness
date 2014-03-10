@@ -1,0 +1,40 @@
+<div id="hud" class="flat roundBottom">
+    <div class="sessionBlock fright top">
+        <div id="sessionInfo" class="fleft"><h4><a href="{% url 'profiles:single' session_profile %}">{{ session_name }}</a></h4>
+            {% if session_species == predator %}<h4><em>predator</em></h4>kills [ {{ species_posts }} ]
+            {% elif session_species == forager %}<h4><em>forager</em></h4>grazed [ {{ species_posts }} ]
+            {% else %}<h4><em>park visitor</em></h4>{% endif %}
+        </div>
+        <div id="sessionIcon">
+            <a href="{% url 'profiles:single' session_profile %}"><img class="round" src="{{ STATIC_URL }}{{ session_icon }}" alt="session profile icon" /></a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    
+    {% if not session_lock %}
+    <div id="sessionBlock">
+        <p>select species:<br/>
+        <span class="mono"><a href="{% url 'profiles:createProfile' 3 %}">[predator]</a><br/>
+        <a href="{% url 'profiles:createProfile' 4 %}">[forager]</a></span></p>
+    </div>
+    {% endif %}
+
+    <div id="sessionAction" class="sessionBlock topLine">
+        <h4>{% if selected_trail != 'no' %}<a href="{% url 'tags:deselectTrail' %}">[ &ndash; ]</a> <a href="{% url 'tags:tag' selected_trail_id %}">[ {{ selected_trail }} ]</a>{% else %}no{% endif %} trail selected</h4>
+        {% if is_pred_prey %}
+        <p><span class="large{% if session_energy <= 10 %} warning{% endif %}">[ {{ session_energy }} ]</span><br/><em>energy</em></p>
+        {% if kosher %}{% if is_post %}<a href="{% url 'profiles:grazePost' profile.id post.id %}">{% else %}<a href="{% url 'profiles:grazeProfile' profile.id %}">{% endif %}<div class="button graze">graze</div></a>
+        {% elif prey %}<a href="{% url 'profiles:eatProfile' profile.id %}"><div class="button eat">eat</div></a>{% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% if session_object.recentActivity %}<div id="activityBox">
+    {% for post in session_object.recentActivity %}
+    <div class="box small miniPost {% if forloop.first and post.justPosted %}latestAction{% endif %}">
+        <a href="{% url 'profiles:singlePost' session_profile post.id %}"><div class="content">
+            <h5 class="strong">{{ post.date_published|date:"F j, Y - fA" }}</h5>
+            <p>{{ post.post_content }}</p>
+            </div></a>
+        </div>{% endfor %}
+</div>{% endif %}

@@ -2,7 +2,6 @@
 from datetime import timedelta
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
-
 from djcelery import setup_loader
 ########## PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:

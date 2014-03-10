@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.shortcuts import redirect
-from profiles.models import Profile
-from utils import siteHelpers, profileHelpers
-from siteEnums import Species, Notification
+from apps.profiles.models import Profile
+from libs import siteHelpers, profileHelpers
+from libs.siteEnums import Species, Notification
 
 class SessionSetup(object):
     
