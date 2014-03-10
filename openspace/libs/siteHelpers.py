@@ -11,7 +11,7 @@ from settings.common import DJANGO_ROOT
 def fairPlay(request):
     """Returns True if current session_profile is active and page should drain energy."""
     path = request.get_full_path()
-    tprof = Profile.objects.get(id=request.session['session_profile'])
+    tprof = Profile.objects.get(id=request.session['session_id'])
     fairUrls = ['changebg', 'addtags', 'postinterest',
         'profileinterest', 'addcomment', 'admin', 'tags', 'friends']
     if not tprof.isActive:
@@ -40,7 +40,7 @@ def isPost(request):
 
 def isSelf(request):
     """Returns True is current nav_id is same as session."""
-    if int(request.session['nav_id']) == int(request.session['session_profile']):
+    if int(request.session['nav_id']) == int(request.session['session_id']):
         return True
     return False
 
@@ -62,7 +62,7 @@ def isFriend(request):
     """Returns True if Profile checkId is a current friend of the session_profile."""
     if isSelf(request):
         return True
-    tprof = Profile.objects.get(id=request.session['session_profile'])
+    tprof = Profile.objects.get(id=request.session['session_id'])
     navProf = Profile.objects.get(id=request.session['nav_id'])
     if navProf.isDead:
         return True
@@ -73,6 +73,13 @@ def isFriend(request):
 def isPredatorPrey(species):
     """Returns True is Profile is species type forager or predator."""
     if int(species) == Species.forager or int(species) == Species.predator:
+        return True
+    return False
+
+def isAllowedUserSpecies(species):
+    """Returns True is species is in the allowed list."""
+    allowed = [Species.visitor, Species.predator, Species.forager]
+    if species in allowed:
         return True
     return False
 

@@ -25,9 +25,9 @@ def sessionProcessor(request):
     session_context['forager'] = Species.forager
     
     # SESSION KEYS
-    tprof = Profile.objects.get(id=request.session['session_profile'])
+    tprof = Profile.objects.get(id=request.session['session_id'])
     session_context['session_object'] = tprof
-    session_context['session_profile'] = tprof.id
+    session_context['session_id'] = tprof.id
     session_context['session_name'] = tprof.fullName
     session_context['session_icon'] = tprof.prettyIcon
     session_context['session_species'] = tprof.species
@@ -52,7 +52,7 @@ def sessionProcessor(request):
 
 def navigationProcessor(request):
     nav_context = {}
-    tprof = Profile.objects.get(id=request.session['session_profile'])
+    tprof = Profile.objects.get(id=request.session['session_id'])
     currentPosition = request.session['nav_position']
     nav_context['nav_position'] = currentPosition
     nav_context['selected_trail'] = request.session['selected_trail']

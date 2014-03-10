@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^tags/', include('apps.tags.urls', namespace='tags')),
     url(r'^search/$', views.parkSearch, name='parkSearch'),
     url(r'^changebg/$', views.changeBg, name='changeBg'),
+    url(r'^resetsession/$', views.resetSession, name='resetSession'),
 )

@@ -57,7 +57,7 @@ def makeFriend(request, profile_id):
     """
     
     friend = get_object_or_404(Profile, pk=profile_id)
-    user = Profile.objects.get(id=request.session['session_profile'])
+    user = Profile.objects.get(id=request.session['session_id'])
     if friend not in user.friends.all():
         request.session['notification'] = Notification.made_friend
         user.friends.add(friend)
@@ -115,7 +115,7 @@ def addComment(request, profile_id, post_id):
         if form.data['comment_content'] and form.is_valid:
             new_comment = form.save(commit=False)
             new_comment.comment_content = re.sub('<[^<]+?>', '', form.data['comment_content'])
-            new_comment.comment_profile = Profile.objects.get(id=request.session['session_profile'])
+            new_comment.comment_profile = Profile.objects.get(id=request.session['session_id'])
             new_comment.comment_post = post
             new_comment.date_published = timezone.now()
             new_comment.save()
@@ -129,7 +129,7 @@ def addComment(request, profile_id, post_id):
 def profileInterest(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
     interestSet = request.session['profile_interest_collection'].split(',')
-    if profile_id not in interestSet and profile_id != request.session['session_profile']:
+    if profile_id not in interestSet and profile_id != request.session['session_id']:
         siteHelpers.upInterest(profile)
         request.session['profile_interest_collection'] += ',' + profile_id
         postOut = 'likes [ ' + profile.fullName + ' ]'
@@ -183,7 +183,7 @@ def createProfile(request, species_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     if not request.session['session_lock']:
         newP = profileHelpers.makeProfile(int(species_id))
-        request.session['session_profile'] = newP.id
+        request.session['session_id'] = newP.id
         request.session['session_species'] = newP.species
         request.session['session_lock'] = True
         request.session['notification'] = Notification.birth
@@ -192,7 +192,7 @@ def createProfile(request, species_id):
 #/profiles/5/eatprofile
 def eatProfile(request, profile_id):
     prey = get_object_or_404(Profile, pk=profile_id)
-    predator = Profile.objects.get(id=request.session['session_profile'])
+    predator = Profile.objects.get(id=request.session['session_id'])
     if profileHelpers.eatPrey(predator, prey):
         request.session['notification'] = Notification.prey
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -202,7 +202,7 @@ def grazeProfile(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
     targetPost = profile.post_set.exclude(tags=Tags.protected).order_by('?')
     if targetPost:
-        if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_profile']), targetPost[0]):
+        if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost[0]):
             request.session['notification'] = Notification.graze
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
@@ -210,6 +210,6 @@ def grazeProfile(request, profile_id):
 def grazePost(request, profile_id, post_id):
     targetPost = get_object_or_404(Post, pk=post_id)
     if targetPost:
-        if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_profile']), targetPost):
+        if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost):
             request.session['notification'] = Notification.graze
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

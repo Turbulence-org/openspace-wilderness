@@ -1,12 +1,12 @@
 <div id="hud" class="flat roundBottom">
     <div class="sessionBlock fright top">
-        <div id="sessionInfo" class="fleft"><h4><a href="{% url 'profiles:single' session_profile %}">{{ session_name }}</a></h4>
+        <div id="sessionInfo" class="fleft"><h4><a href="{% url 'profiles:single' session_id %}">{{ session_name }}</a></h4>
             {% if session_species == predator %}<h4><em>predator</em></h4>kills [ {{ species_posts }} ]
             {% elif session_species == forager %}<h4><em>forager</em></h4>grazed [ {{ species_posts }} ]
             {% else %}<h4><em>park visitor</em></h4>{% endif %}
         </div>
         <div id="sessionIcon">
-            <a href="{% url 'profiles:single' session_profile %}"><img class="round" src="{{ STATIC_URL }}{{ session_icon }}" alt="session profile icon" /></a>
+            <a href="{% url 'profiles:single' session_id %}"><img class="round" src="{{ STATIC_URL }}{{ session_icon }}" alt="session profile icon" /></a>
         </div>
     </div>
     <div class="clear"></div>
@@ -32,7 +32,7 @@
 {% if session_object.recentActivity %}<div id="activityBox">
     {% for post in session_object.recentActivity %}
     <div class="box small miniPost {% if forloop.first and post.justPosted %}latestAction{% endif %}">
-        <a href="{% url 'profiles:singlePost' session_profile post.id %}"><div class="content">
+        <a href="{% url 'profiles:singlePost' session_id post.id %}"><div class="content">
             <h5 class="strong">{{ post.date_published|date:"F j, Y - fA" }}</h5>
             <p>{{ post.post_content }}</p>
             </div></a>

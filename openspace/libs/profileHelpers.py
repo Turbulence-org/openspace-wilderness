@@ -99,7 +99,7 @@ def makeUserPost(request, content, tagid):
     
     Takes as input request object, post content, and a tag id
     """
-    profile = Profile.objects.get(id=request.session['session_profile'])
+    profile = Profile.objects.get(id=request.session['session_id'])
     newPost = Post(
         post_content=content,
         post_profile=profile,

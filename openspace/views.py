@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 from apps.profiles.models import Profile, Post, Comment
@@ -74,3 +74,8 @@ def creditsPage(request):
 def changeBg(request):
     request.session['page_background'] = siteHelpers.bgSelect(request.session['page_background'])
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+#resetsession/
+def resetSession(request):
+    request.session['new_session'] = True
+    return redirect('index')
