@@ -44,7 +44,7 @@ class Profile(models.Model):
     blog_id = models.CharField(max_length=5, blank=True)
     last_login = models.DateField('last login', blank=True, null=True)
     friends = models.ManyToManyField('self', blank=True)
-    img_number = models.PositiveIntegerField(max_length=4, blank=True, null=True)
+    img_number = models.PositiveIntegerField(max_length=4, default=1)
     tags = models.ManyToManyField(Tag, blank=True)
     interest = models.PositiveIntegerField(max_length=5, default=0)
     energy = models.PositiveIntegerField(max_length=3, default=1)
