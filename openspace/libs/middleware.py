@@ -8,6 +8,8 @@ class SessionSpeciesError(object):
     """Sets the new_session flag to true if somehow the user session ends up as an inactive species"""
     
     def process_request(self, request):
+        if 'session_species' not in request.session:
+            request.session['session_species'] = Species.visitor
         if not siteHelpers.isAllowedUserSpecies(request.session['session_species']):
             request.session['new_session'] = True
 
