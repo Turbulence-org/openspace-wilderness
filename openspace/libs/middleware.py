@@ -29,8 +29,8 @@ class SessionSetup(object):
                 ('show_greeting', True),
                 #('page_background', siteHelpers.bgSelect(666)),
                 #('page_banner', siteHelpers.bannerSelect(666)),
-                ('page_background', 1)
-                ('page_banner', 1)
+                ('page_background', 1),
+                ('page_banner', 1),
                 ('session_id', entry_user.id),
                 ('session_species', entry_user.species),
                 ('session_death', False),
