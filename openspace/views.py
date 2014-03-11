@@ -7,7 +7,7 @@ from libs import siteHelpers
 
 #404
 def openspace404(request):
-    return render(request, 'openspace/help.html')
+    return render(request, 'help.html')
 
 #/
 def index(request):
