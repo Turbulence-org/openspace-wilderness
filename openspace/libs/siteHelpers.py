@@ -6,7 +6,7 @@ from random import randint
 from os.path import join
 from sys import path
 import os, fnmatch, re
-from settings.common import STATICFILES_DIRS
+from settings.common import STATIC_ROOT
 
 def fairPlay(request):
     """Returns True if current session_profile is active and page should drain energy."""
@@ -112,7 +112,7 @@ def addTags(obj, tags):
 
 def bannerSelect(current):
     """Returns a randomly selected banner image from collection of banners. Used in bruce_banner block."""
-    dirpath = join(STATICFILES_DIRS, 'media/banners/')
+    dirpath = join(STATIC_ROOT, 'assets/media/banners/')
     top = len(fnmatch.filter(os.listdir(dirpath), '*jpg'))
     selection = randint(1, top)
     while selection == current:
@@ -121,7 +121,7 @@ def bannerSelect(current):
 
 def bgSelect(current):
     """Returns next background image from collection of backgrounds. Used in background-style.html."""
-    dirpath = join(STATICFILES_DIRS, 'media/backgrounds/')
+    dirpath = join(STATIC_ROOT, '/media/backgrounds/')
     if current > len(fnmatch.filter(os.listdir(dirpath), '*jpg')):
         return randint(1, len(fnmatch.filter(os.listdir(dirpath), '*jpg')))
     selection = current + 1

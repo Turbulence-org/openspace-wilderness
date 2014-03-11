@@ -7,7 +7,7 @@ from random import randint, random
 import os, re, fnmatch
 import data_path
 from os.path import join
-from settings.common import STATICFILES_DIRS
+from settings.common import STATIC_URL
 
 def makeProfile(speciesType):
     """Creates and returns a new Profile object of provided speciesType.
@@ -29,7 +29,8 @@ def makeProfile(speciesType):
         location = locationGenerate(),
         species = speciesType
     )
-    assignImages(profile) #contains a profile.save()
+    #assignImages(profile) #contains a 
+    profile.save()
     if speciesType == Species.abandoned:
         profile.blog_id, profile.blog_url, profile.last_login = makePosts(profile)
         profile.position = profile.id
@@ -60,7 +61,8 @@ def makeAnonymous():
         visible = False,
         last_login = timezone.now()
     )
-    assignImages(profile) #contains a profile.save()
+    #assignImages(profile) #contains a 
+    profile.save()
     swapPosition(profile, Profile.objects.all().order_by('?')[0])
     makeBirthPost(profile)
     return profile
@@ -257,7 +259,7 @@ def swapPosition(profileA, profileB):
 
 def assignImages(profile):
     """Selects and assigns a random image number to Profile object based on species type."""
-    dirpath = join(STATICFILES_DIRS, 'media/' + profile.speciesReadable + '/')
+    dirpath = join(STATIC_URL, '/media/' + profile.speciesReadable + '/')
     top = len(fnmatch.filter(os.listdir(dirpath), '*jpg'))
     profile.img_number = randint(1, top/2)
     profile.save()

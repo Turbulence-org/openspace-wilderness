@@ -5,11 +5,11 @@ from libs.siteEnums import Gender, Species
 from random import randint
 import os, fnmatch
 from os.path import join
-from settings.common import STATICFILES_DIRS
+from settings.common import STATIC_URL
 
 def directoryImageTop(species):
     """Returns int for the amount of images in a given species folder for assignment."""
-    dirpath = join(STATICFILES_DIRS, 'media/' + species + '/')
+    dirpath = join(STATIC_URL, 'media/' + species + '/')
     return len(fnmatch.filter(os.listdir(dirpath), '*jpg')) / 2
 
 
