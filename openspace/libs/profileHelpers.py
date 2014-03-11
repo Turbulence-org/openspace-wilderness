@@ -7,7 +7,7 @@ from random import randint, random
 import os, re, fnmatch
 import data_path
 from os.path import join
-from settings.common import DJANGO_ROOT
+from settings.common import STATICFILES_DIRS
 
 def makeProfile(speciesType):
     """Creates and returns a new Profile object of provided speciesType.
@@ -257,7 +257,7 @@ def swapPosition(profileA, profileB):
 
 def assignImages(profile):
     """Selects and assigns a random image number to Profile object based on species type."""
-    dirpath = join(DJANGO_ROOT, 'assets/media/' + profile.speciesReadable + '/')
+    dirpath = join(STATICFILES_DIRS, 'media/' + profile.speciesReadable + '/')
     top = len(fnmatch.filter(os.listdir(dirpath), '*jpg'))
     profile.img_number = randint(1, top/2)
     profile.save()
