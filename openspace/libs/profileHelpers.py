@@ -95,7 +95,7 @@ def makePosts(profile):
         newPost.save()
     return blogId, url, lastUpdate
 
-def makeUserPost(request, content, tagid):
+def makeUserPost(request, content, tagname):
     """Creates and returns a new Post object for the session profile and sends a notification flag.
     
     Takes as input request object, post content, and a tag id
@@ -108,12 +108,12 @@ def makeUserPost(request, content, tagid):
         just_posted=True
     )
     newPost.save()
-    newPost.tags.add(Tag.objects.get(id=tagid))
+    newPost.tags.add(Tag.objects.filter(name=tagname)[0])
     newPost.save()
-    request.session['notification'] = tagid
+    request.session['notification'] = newPost.tags.all()[0].id
     return newPost
 
-def makeTaggedPost(profile, content, tagid):
+def makeTaggedPost(profile, content, tagname):
     """Creates and returns a new Post object assigned to supplied Profile.
     
     Takes as input a Profile object, a content string, and an id for a Tag object.
@@ -124,19 +124,19 @@ def makeTaggedPost(profile, content, tagid):
         date_published=timezone.now()
     )
     newPost.save()
-    newPost.tags.add(Tag.objects.get(id=tagid))
+    newPost.tags.add(Tag.objects.filter(name=tagname)[0])
     newPost.save()
     return newPost
 
 def makeBirthPost(profile):
     """Creates a Post announcing the birth of a Profile into the wilderness. Returns nothing."""
     postOut = '[ ' + profile.fullName + ' ] was born into the [ openspace ] wilderness.'
-    makeTaggedPost(profile, postOut, Tags.birth)
+    makeTaggedPost(profile, postOut, 'birth')
 
 def makeDeathPost(profile):
     """Creates a Post announcing the death of a Profile in the wilderness. Returns nothing."""
     postOut = '[ ' + profile.fullName + ' ] died of starvation'
-    makeTaggedPost(profile, postOut, Tags.death)
+    makeTaggedPost(profile, postOut, 'death')
 
 def eatPrey(predator, prey):
     """Predator type Profile consumes the energy of a Prey type Profile. Returns True if success.
@@ -148,9 +148,9 @@ def eatPrey(predator, prey):
     predator.save()
     prey.die()
     postOut = 'eaten by [ ' + predator.fullName + ' ]'
-    makeTaggedPost(prey, postOut, Tags.prey)
+    makeTaggedPost(prey, postOut, 'predation')
     postOut = 'ate [ ' + prey.fullName + ' ]'
-    makeTaggedPost(predator, postOut, Tags.predator)
+    makeTaggedPost(predator, postOut, 'predation')
     return True
 
 def grazePost(forager, post):
@@ -174,7 +174,7 @@ def grazePost(forager, post):
     bite = post.post_content[start:end]
     bite = bite.replace(chompChar, '')
     if len(bite) > 0:
-        grazePost = makeTaggedPost(forager, bite, Tags.graze)
+        grazePost = makeTaggedPost(forager, bite, 'grazing')
         forager.energy += len(bite) - bite.count(chompChar) - Profile.objects.filter(species=4).count()
         forager.save()
         post.post_content = (post.post_content[0:start] +

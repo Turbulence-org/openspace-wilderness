@@ -31,9 +31,9 @@ def sessionProcessor(request):
     session_context['session_energy'] = tprof.energy
     session_context['species_posts'] = 0
     if tprof.isPredator:
-        session_context['species_posts'] = tprof.post_set.filter(tags=Tags.predator).count()
+        session_context['species_posts'] = tprof.post_set.filter(tags=Tags.predation).count()
     if tprof.isForager:
-        session_context['species_posts'] = tprof.post_set.filter(tags=Tags.graze).count()
+        session_context['species_posts'] = tprof.post_set.filter(tags=Tags.grazing).count()
     session_context['session_lock'] = request.session['session_lock']
     
     # HANDLING FOOD

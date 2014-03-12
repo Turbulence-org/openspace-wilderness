@@ -47,7 +47,7 @@ h5 {font-size:8pt;}
 .topLine {padding-top:12px; border-top:1px solid #ccc;}
 .bottomLine {padding-bottom:1em; margin-bottom:4px; border-bottom:1px solid #d7d7d7;}
 .round {-moz-border-radius: 3px; -webkit-border-radius: 3px; -khtml-border-radius: 3px; border-radius: 3px;}
-.emblem {background:url({{ STATIC_URL }}media/site/osEmblemLarge.jpg) center left no-repeat #fff !important;}
+.emblem {background:url(https://s3.amazonaws.com/openspacemedia/media/site/osEmblemLarge.jpg) center left no-repeat #fff !important;}
 
 /* IMG */
 img {margin:0; padding:0;}
@@ -195,7 +195,7 @@ padding:8px 0 2px 0;
 #sessionInfo {margin-right:14px;}
 .sessionBlock {margin-bottom:14px;}
 
-#logo {background:url({{ STATIC_URL }}media/site/osLogoGlitch.jpg) center right no-repeat #141414; width:inherit; height:60px; padding:3px;}
+#logo {background:url(https://s3.amazonaws.com/openspacemedia/media/site/osLogoGlitch.jpg) center right no-repeat #141414; width:inherit; height:60px; padding:3px;}
 #activityBox {margin-top:16px;}
 #searchBox {background:#141414; margin-top:16px; padding-top:8px;}
 #messages {color:#141414; letter-spacing:0.75em; overflow:hidden;}
@@ -229,7 +229,7 @@ border-right:0px solid #C7C8CA;
 #url {overflow:hidden;}
 
 #osIcon {
-background:url({{ STATIC_URL }}media/site/osEmblemIcon.png) top left no-repeat;
+background:url(https://s3.amazonaws.com/openspacemedia/media/site/osEmblemIcon.png) top left no-repeat;
 position:fixed;
 display:block;
 width:57px;

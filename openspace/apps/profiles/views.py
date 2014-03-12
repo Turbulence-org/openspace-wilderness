@@ -65,7 +65,7 @@ def makeFriend(request, profile_id):
         friend.friends.add(user)
         friend.save()
         postOut = 'made friends with [ ' + friend.fullName + ' ]'
-        profileHelpers.makeUserPost(request, postOut, Tags.friends)
+        profileHelpers.makeUserPost(request, postOut, 'friends')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/profiles/<profile_id>/tags/
@@ -120,7 +120,7 @@ def addComment(request, profile_id, post_id):
             new_comment.date_published = timezone.now()
             new_comment.save()
             postOut = '[ left comment ] ' + new_comment.comment_content
-            profileHelpers.makeUserPost(request, postOut, Tags.comment)
+            profileHelpers.makeUserPost(request, postOut, 'comment')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     #TODO error massage
     return redirect('profiles:singlePost', profile_id, post_id)
@@ -133,7 +133,7 @@ def profileInterest(request, profile_id):
         siteHelpers.upInterest(profile)
         request.session['profile_interest_collection'] += ',' + profile_id
         postOut = 'likes [ ' + profile.fullName + ' ]'
-        profileHelpers.makeUserPost(request, postOut, Tags.interest)
+        profileHelpers.makeUserPost(request, postOut, 'interest')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/profiles/post/5/postinterest/
@@ -144,7 +144,7 @@ def postInterest(request, post_id):
         siteHelpers.upInterest(post)
         request.session['post_interest_collection'] += ',' + post_id
         postOut = 'likes a post by [ ' + post.postProfileName + ' ]'
-        profileHelpers.makeUserPost(request, postOut, Tags.interest)
+        profileHelpers.makeUserPost(request, postOut, 'interest')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
 #/profiles/5/addtags
@@ -157,7 +157,7 @@ def addProfileTags(request, profile_id):
             new_tags = form.data['pro_new_tags']
             siteHelpers.addTags(profile, new_tags.split(', '))
             postOut = '[ added tags ] ' + new_tags
-            profileHelpers.makeUserPost(request, postOut, Tags.tags)
+            profileHelpers.makeUserPost(request, postOut, 'tagged profile')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return redirect('profiles:single', profile_id)
 
@@ -172,7 +172,7 @@ def addPostTags(request, profile_id, post_id):
             new_tags = form.data['post_new_tags']
             siteHelpers.addTags(post, new_tags.split(', '))
             postOut = '[ added tags ] ' + new_tags
-            profileHelpers.makeUserPost(request, postOut, Tags.tags)
+            profileHelpers.makeUserPost(request, postOut, 'tagged post')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     #TODO error massage
     return redirect('profiles:post', profile_id, post_id)

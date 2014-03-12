@@ -29,7 +29,7 @@ def selectTrail(request, tag_id):
     else:
         request.session['selected_trail'] = tag.name
         postOut = 'following the [ ' + tag.name + ' ] trail' 
-        profileHelpers.makeUserPost(request, postOut, Tags.trails)
+        profileHelpers.makeUserPost(request, postOut, 'trail')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/tags/deselecttrail/

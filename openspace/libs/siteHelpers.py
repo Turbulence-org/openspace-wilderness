@@ -136,7 +136,9 @@ def getTheMessage(request, i):
         # birth
         'welcome to the [openspace] wilderness',
         # death
-        'you died from starvation',
+        'you have died',
+        # starvation
+        'you have died from starvation',
         # predation
         'you ate [' + navName + '] to sustain life',
         # grazing
@@ -151,11 +153,11 @@ def getTheMessage(request, i):
         'you tagged [' + navName + ']',
         # post_tag
         'you tagged a post',
-        # tail
+        # trail
         'following [' + request.session['selected_trail'] + '] trail'
         ]
     if i < len(siteMessages):
-        return siteMessages[i]
+        return siteMessages[i-1]
     return "something strange has happened"
 
 def parkDataProcessor():
@@ -164,10 +166,10 @@ def parkDataProcessor():
     postCount = Post.objects.all().count()
     activeCount = Profile.objects.exclude(species=Species.abandoned).count()
     data = {}
-    (data['tagged_profile_count'],
-        data['tagged_post_count'],
-        data['tagged_percent']) = taggedProcessor(profileCount + postCount)
-    data['dead_count'], data['dead_percent'] = deadProcessor(activeCount)
+    #(data['tagged_profile_count'],
+    #    data['tagged_post_count'],
+    #    data['tagged_percent']) = taggedProcessor(profileCount + postCount)
+    #data['dead_count'], data['dead_percent'] = deadProcessor(activeCount)
     return data
 
 def taggedProcessor(total):

@@ -149,7 +149,7 @@ class Profile(models.Model):
         self.energy = 0
         self.visible = True
         self.last_login = timezone.now() 
-        self.img_number = randint(1, returnCount(self.speciesReadable))
+        self.img_number = randint(1, returnCount('dead'))
         self.save()
 
 
