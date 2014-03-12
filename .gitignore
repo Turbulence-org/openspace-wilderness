@@ -21,3 +21,4 @@ celerybeat-schedule
 *.png
 *.jpg
 *.jpeg
+*.gif
