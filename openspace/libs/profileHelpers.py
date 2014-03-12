@@ -259,7 +259,7 @@ def swapPosition(profileA, profileB):
 
 def assignImages(profile):
     """Selects and assigns a random image number to Profile object based on species type."""
-    dirpath = join(STATIC_URL, '/media/' + profile.speciesReadable + '/')
+    dirpath = join(STATIC_URL, 'media/' + profile.speciesReadable + '/')
     top = len(fnmatch.filter(os.listdir(dirpath), '*jpg'))
     profile.img_number = randint(1, top/2)
     profile.save()
