@@ -30,8 +30,7 @@ def makeProfile(speciesType):
         location = locationGenerate(),
         species = speciesType
     )
-    #assignImages(profile) #contains a 
-    profile.save()
+    assignImages(profile) #contains a profile.save()
     if speciesType == Species.abandoned:
         profile.blog_id, profile.blog_url, profile.last_login = makePosts(profile)
         profile.position = profile.id
@@ -62,8 +61,7 @@ def makeAnonymous():
         visible = False,
         last_login = timezone.now()
     )
-    #assignImages(profile) #contains a 
-    profile.save()
+    assignImages(profile) #contains a profile.save()
     swapPosition(profile, Profile.objects.all().order_by('?')[0])
     makeBirthPost(profile)
     return profile

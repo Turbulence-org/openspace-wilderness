@@ -37,9 +37,10 @@ def initialProfiles():
     
 def initialTags():
      return [
-        'graze', 'predator', 'prey', 'birth', 'death', 'starvation', 'friends', 'protected',
-        'sports', 'depression', 'boys',
-        'girls', 'sex', 'school', 'internet', 'apology'
+        'protected', 'birth', 'death', 'starvation', 'predation', 'grazing', 'friends',
+        'comment', 'interest', 'tagged profile', 'tagged post', 'trail',
+        'sports', 'depression', 'boys', 'girls', 'sex', 'school', 'internet',
+        'apology', 'gibberish', 'pets', 'music', 'work', 'politics', 'journal',
         ]
 
 def setupOpen():

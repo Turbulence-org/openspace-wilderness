@@ -13,29 +13,30 @@ class Species:
     dead = 5
 
 class Tags:
-    predator = 1
-    prey = 2
-    birth = 3
-    death = 4
-    starvation = 5
+    protected = 0
+    birth = 1
+    death = 2
+    starvation = 3
+    predation = 4
+    grazing = 5
     friends = 6
-    graze = 7
-    protected = 8
-    comment = 9
-    interest = 10
-    tags = 11
-    trails = 12
-
+    comment = 7
+    interest = 8
+    profile_tag = 9
+    post_tag = 10
+    trail = 11
+    
 class Notification:
     no_notification = 0
-    made_friend = 1
-    starvation = 2
-    prey = 3
-    graze = 4
-    birth = 5
-    comment = 6
-    interest = 7
-    profileTag = 8
-    postTag = 9
-    trail = 10
+    birth = 1
+    death = 2
+    starvation = 3
+    predation = 4
+    grazing = 5
+    made_friend = 6
+    comment = 7
+    interest = 8
+    profile_tag = 9
+    post_tag = 10
+    trail = 11
     

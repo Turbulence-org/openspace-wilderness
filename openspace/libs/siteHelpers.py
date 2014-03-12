@@ -133,20 +133,30 @@ def getTheMessage(request, i):
     navName = Profile.objects.get(id=request.session['nav_id']).fullName
     siteMessages = [
         'Null',
-        'you made friends with [' + navName + ']',
-        'you died from starvation',
-        'you ate [' + navName + '] to sustain life',
-        'you grazed to sustain life',
+        # birth
         'welcome to the [openspace] wilderness',
+        # death
+        'you died from starvation',
+        # predation
+        'you ate [' + navName + '] to sustain life',
+        # grazing
+        'you grazed to sustain life',
+        # made_friends
+        'you made friends with [' + navName + ']',
+        # comment
         'you commented on a post',
+        # interest
         'you liked something',
+        # profile_tag
         'you tagged [' + navName + ']',
+        # post_tag
         'you tagged a post',
+        # tail
         'following [' + request.session['selected_trail'] + '] trail'
         ]
     if i < len(siteMessages):
         return siteMessages[i]
-    return "something has happened"
+    return "something strange has happened"
 
 def parkDataProcessor():
     """Returns a dictionary containing data about the site."""
@@ -156,8 +166,8 @@ def parkDataProcessor():
     data = {}
     (data['tagged_profile_count'],
         data['tagged_post_count'],
-        data['tagged_percent']) = taggedData(profileCount + postCount)
-    data['dead_count'], data['dead_percent'] = deadData(activeCount)
+        data['tagged_percent']) = taggedProcessor(profileCount + postCount)
+    data['dead_count'], data['dead_percent'] = deadProcessor(activeCount)
     return data
 
 def taggedProcessor(total):

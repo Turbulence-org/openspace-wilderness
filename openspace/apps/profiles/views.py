@@ -194,7 +194,7 @@ def eatProfile(request, profile_id):
     prey = get_object_or_404(Profile, pk=profile_id)
     predator = Profile.objects.get(id=request.session['session_id'])
     if profileHelpers.eatPrey(predator, prey):
-        request.session['notification'] = Notification.prey
+        request.session['notification'] = Notification.predation
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
 #/profiles/5/graze
@@ -203,7 +203,7 @@ def grazeProfile(request, profile_id):
     targetPost = profile.post_set.exclude(tags=Tags.protected).order_by('?')
     if targetPost:
         if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost[0]):
-            request.session['notification'] = Notification.graze
+            request.session['notification'] = Notification.grazing
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/profiles/5/post/5/graze
@@ -211,5 +211,5 @@ def grazePost(request, profile_id, post_id):
     targetPost = get_object_or_404(Post, pk=post_id)
     if targetPost:
         if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost):
-            request.session['notification'] = Notification.graze
+            request.session['notification'] = Notification.grazing
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
