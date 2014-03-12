@@ -7,7 +7,7 @@ from settings.common import STATIC_URL
 
 def siteProcessor(request):
     background = 'media/backgrounds/bg-' + str(request.session['page_background']) + '.jpg'
-    request.session['page_banner'] = siteHelpers.bannerSelect(request.session['page_banner'])
+    #request.session['page_banner'] = siteHelpers.bannerSelect(request.session['page_banner'])
     #banner_src = join(STATIC_URL, 'media/banners/banner-' + str(request.session['page_banner']) + '.jpg')
     banner_src = 'media/banners/banner-' + str(request.session['page_banner']) + '.jpg'
     site_context = {
