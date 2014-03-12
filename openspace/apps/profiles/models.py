@@ -2,15 +2,11 @@ from django.db import models
 from django.utils import timezone
 from apps.tags.models import Tag
 from libs.siteEnums import Gender, Species
+from libs.auxHelpers import returnCount
 from random import randint
 import os, fnmatch
 from os.path import join
 from settings.common import STATIC_URL
-
-def directoryImageTop(species):
-    """Returns int for the amount of images in a given species folder for assignment."""
-    dirpath = join(STATIC_URL, 'media/' + species + '/')
-    return len(fnmatch.filter(os.listdir(dirpath), '*jpg')) / 2
 
 
 class Profile(models.Model):
@@ -153,7 +149,7 @@ class Profile(models.Model):
         self.energy = 0
         self.visible = True
         self.last_login = timezone.now() 
-        self.img_number = randint(1, directoryImageTop(self.speciesReadable))
+        self.img_number = randint(1, returnCount(self.speciesReadable))
         self.save()
 
 

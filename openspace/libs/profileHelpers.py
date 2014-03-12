@@ -4,6 +4,7 @@ from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
 from libs.pullBlog import pullBlog
 from libs.siteEnums import Gender, Tags, Species
+from libs.auxHelpers import returnCount
 from random import randint, random
 import os, re, fnmatch
 import data_path
@@ -259,7 +260,6 @@ def swapPosition(profileA, profileB):
 
 def assignImages(profile):
     """Selects and assigns a random image number to Profile object based on species type."""
-    dirpath = static('media/' + profile.speciesReadable + '/')
-    top = len(fnmatch.filter(os.listdir(dirpath), '*jpg'))
-    profile.img_number = randint(1, top/2)
+    imgCount = returnCount(profile.speciesReadable)
+    profile.img_number = randint(1, imgCount/2)
     profile.save()

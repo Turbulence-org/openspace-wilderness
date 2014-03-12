@@ -3,6 +3,7 @@ from django.db.models import Count
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
 from libs.siteEnums import Species
+from libs.auxHelpers import returnCount
 from random import randint
 from sys import path
 import os, fnmatch, re
@@ -111,20 +112,19 @@ def addTags(obj, tags):
 
 def bannerSelect(current):
     """Returns a randomly selected banner image from collection of banners. Used in bruce_banner block."""
-    dirpath = static('media/banners/')
-    top = len(fnmatch.filter(os.listdir(dirpath), '*jpg'))
-    selection = randint(1, top)
+    bannerCount = returnCount('banners')
+    selection = randint(1, bannerCount)
     while selection == current:
-        selection = randint(1, top)
+        selection = randint(1, bannerCount)
     return selection
 
 def bgSelect(current):
     """Returns next background image from collection of backgrounds. Used in background-style.html."""
-    dirpath = static('media/backgrounds/')
-    if current > len(fnmatch.filter(os.listdir(dirpath), '*jpg')):
-        return randint(1, len(fnmatch.filter(os.listdir(dirpath), '*jpg')))
+    bgCount = returnCount('backgrounds')
+    if current > bgCount:
+        return randint(1, bgCount)
     selection = current + 1
-    if selection > len(fnmatch.filter(os.listdir(dirpath), '*jpg')):
+    if selection > bgCount:
         selection = 1
     return selection
     
