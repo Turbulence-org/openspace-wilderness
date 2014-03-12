@@ -1,3 +1,4 @@
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils import timezone
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
@@ -7,7 +8,6 @@ from random import randint, random
 import os, re, fnmatch
 import data_path
 from os.path import join
-from settings.common import STATIC_URL
 
 def makeProfile(speciesType):
     """Creates and returns a new Profile object of provided speciesType.
@@ -259,7 +259,7 @@ def swapPosition(profileA, profileB):
 
 def assignImages(profile):
     """Selects and assigns a random image number to Profile object based on species type."""
-    dirpath = join(STATIC_URL, 'media/' + profile.speciesReadable + '/')
+    dirpath = static('media/' + profile.speciesReadable + '/')
     top = len(fnmatch.filter(os.listdir(dirpath), '*jpg'))
     profile.img_number = randint(1, top/2)
     profile.save()
