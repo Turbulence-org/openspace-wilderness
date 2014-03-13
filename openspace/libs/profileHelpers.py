@@ -69,15 +69,12 @@ def makeAnonymous():
 def makeFriends(profile):
     """Assigns a number of friends to supplied Profile object. Returns nothing."""
     allpro = len(Profile.objects.all())
-    minFriends = 19
-    maxFriends = 66
-    pics = [profile.img_number]
-    for i in range(randint(minFriends, maxFriends)):
-        newFriend = randint(1, allpro)
-        newImg = Profile.objects.get(id=newFriend).img_number
-        if newFriend != profile.id and newImg not in pics:
-            pics.append(newImg)
-            profile.friends.add(Profile.objects.get(id=newFriend))
+    minFriends = 12
+    maxFriends = 46
+    manyFriends = randint(minFriends, maxFriends)
+    friends = Profile.objects.exclude(id=profile.id).fliter(species=Species.abandoned).order_by('?')[:manyFriends]
+    for friend in friends:
+        profile.friends.add(friend)
     profile.save()
 
 def makePosts(profile):
@@ -136,7 +133,7 @@ def makeBirthPost(profile):
 def makeDeathPost(profile):
     """Creates a Post announcing the death of a Profile in the wilderness. Returns nothing."""
     postOut = '[ ' + profile.fullName + ' ] died of starvation'
-    makeTaggedPost(profile, postOut, 'death')
+    makeTaggesPost(profile, postOut, 'death')
 
 def eatPrey(predator, prey):
     """Predator type Profile consumes the energy of a Prey type Profile. Returns True if success.

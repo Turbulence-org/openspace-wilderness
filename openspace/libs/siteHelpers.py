@@ -133,27 +133,27 @@ def getTheMessage(request, i):
     navName = Profile.objects.get(id=request.session['nav_id']).fullName
     siteMessages = [
         'Null',
-        # birth
+        # birth 1
         'welcome to the [openspace] wilderness',
-        # death
+        # death 2
         'you have died',
-        # starvation
+        # starvation 3
         'you have died from starvation',
-        # predation
+        # predation 4
         'you ate [' + navName + '] to sustain life',
-        # grazing
+        # grazing 5
         'you grazed to sustain life',
-        # made_friends
+        # made_friends 6
         'you made friends with [' + navName + ']',
-        # comment
+        # comment 7
         'you commented on a post',
-        # interest
+        # interest 8
         'you liked something',
-        # profile_tag
+        # profile_tag 9
         'you tagged [' + navName + ']',
-        # post_tag
+        # post_tag 10
         'you tagged a post',
-        # trail
+        # trail 11
         'following [' + request.session['selected_trail'] + '] trail'
         ]
     if i < len(siteMessages):
