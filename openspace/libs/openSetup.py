@@ -47,7 +47,7 @@ def setupOpen():
     #SETUP ABANDONED PROFILES
     populate(75)
     profiles = Profile.objects.all()
-    for p in profiles:
+    #for p in profiles:
         #makeFriends(p)
     
     #SETUP TAGS
