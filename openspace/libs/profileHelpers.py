@@ -72,7 +72,7 @@ def makeFriends(profile):
     minFriends = 12
     maxFriends = 46
     manyFriends = randint(minFriends, maxFriends)
-    friends = Profile.objects.exclude(id=profile.id).fliter(species=Species.abandoned).order_by('?')[:manyFriends]
+    friends = Profile.objects.exclude(id=profile.id).filter(species=Species.abandoned).order_by('?')[:manyFriends]
     for friend in friends:
         profile.friends.add(friend)
     profile.save()
