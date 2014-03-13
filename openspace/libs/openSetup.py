@@ -48,7 +48,7 @@ def setupOpen():
     populate(75)
     profiles = Profile.objects.all()
     for p in profiles:
-        makeFriends(p)
+        #makeFriends(p)
     
     #SETUP TAGS
     for t in initialTags():
