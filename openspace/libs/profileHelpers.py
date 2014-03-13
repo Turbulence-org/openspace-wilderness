@@ -69,11 +69,11 @@ def makeAnonymous():
 def makeFriends(profile):
     """Assigns a number of friends to supplied Profile object. Returns nothing."""
     allpro = len(Profile.objects.all())
-    minFriends = 12
-    maxFriends = 46
+    minFriends = 13
+    maxFriends = 43
     manyFriends = randint(minFriends, maxFriends)
-    friends = Profile.objects.exclude(id=profile.id).filter(species=Species.abandoned).order_by('?')[:manyFriends]
-    for friend in friends:
+    newfriends = Profile.objects.exclude(id=profile.id).filter(species=Species.abandoned).order_by('?')[:manyFriends]
+    for friend in newfriends:
         profile.friends.add(friend)
     profile.save()
 
