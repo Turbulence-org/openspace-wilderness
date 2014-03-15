@@ -1,0 +1,22 @@
+{% extends 'sub-base.html' %}
+{% block pagetitle %} wilderness{% endblock %}
+{% block body %}
+<div class="box">
+    <div class="heading">
+        <h3>{{ heading }}</h3>
+        <div id="pagination" class="auxAct mono small">
+            {% if paged_results.has_previous %}
+            <a href="?page={{ paged_results.previous_page_number }}"><<</a>
+            {% endif %}
+            {{ paged_results.number }} of {{ paged_results.paginator.num_pages }}
+            {% if paged_results.has_next %}
+            <a href="?page={{ paged_results.next_page_number }}">>></a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="content">
+        {% if profileType %}{% include 'profile-results.html' %}
+        {% else %}{% include 'post-results.html' %}{% endif %}
+    </div>
+</div>
+{% endblock %}

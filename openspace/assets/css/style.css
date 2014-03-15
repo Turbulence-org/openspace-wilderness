@@ -15,6 +15,7 @@ h1, h2, h3 {font-weight:bold; line-height:1.5em; color:#777;}
 h1 {font-size:18pt;} h2 {font-size:14pt;} h3 {font-size:10pt;}
 h4, h5 {font-weight:normal; font-size:inherit;}
 h5 {font-size:8pt;}
+strong {font-family:monospace; font-weight:bold; color:#777;}
 .strong {font-weight:bold; color:#777;}
 .title {margin-bottom:0.5em;}
 .light {color:#999;}
@@ -47,7 +48,7 @@ h5 {font-size:8pt;}
 .topLine {padding-top:12px; border-top:1px solid #ccc;}
 .bottomLine {padding-bottom:1em; margin-bottom:4px; border-bottom:1px solid #d7d7d7;}
 .round {-moz-border-radius: 3px; -webkit-border-radius: 3px; -khtml-border-radius: 3px; border-radius: 3px;}
-.emblem {background:url(https://s3.amazonaws.com/openspacemedia/media/site/osEmblemLarge.jpg) center left no-repeat #fff !important;}
+.emblem {background:url(https://s3.amazonaws.com/openspacemedia/media/site/osEmblemLarge.jpg) center right no-repeat #fff !important;}
 
 /* IMG */
 img {margin:0; padding:0;}

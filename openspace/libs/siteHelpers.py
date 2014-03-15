@@ -1,4 +1,5 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
@@ -8,10 +9,20 @@ from random import randint
 from sys import path
 import os, fnmatch, re
 
-def fairPlay(request):
+def paginatorMaker(unpagedResults, page, num):
+    """Takes the page from the request and returns paginated data."""
+    results = Paginator(unpagedResults, num)
+    try:
+        pagedResults = results.page(page)
+    except PageNotAnInteger:
+        pagedResults = results.page(1)
+    except EmptyPage:
+        pagedResults = results.page(results.num_pages)
+    return pagedResults
+
+def fairPlay(tprof, request):
     """Returns True if current session_profile is active and page should drain energy."""
     path = request.get_full_path()
-    tprof = Profile.objects.get(id=request.session['session_id'])
     fairUrls = ['changebg', 'addtags', 'postinterest',
         'profileinterest', 'addcomment', 'admin', 'tags', 'friends']
     if not tprof.isActive:

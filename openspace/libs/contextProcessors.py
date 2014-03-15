@@ -1,4 +1,4 @@
-from apps.profiles.models import Profile
+from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
 from libs import navHelpers, siteHelpers
 from libs.siteEnums import Notification, Species, Tags
@@ -22,19 +22,16 @@ def sessionProcessor(request):
     session_context['forager'] = Species.forager
     
     # SESSION KEYS
-    tprof = Profile.objects.get(id=request.session['session_id'])
+    tprof = Profile.objects.select_related('post_set').get(id=request.session['session_id'])
     session_context['session_object'] = tprof
     session_context['session_id'] = tprof.id
     session_context['session_name'] = tprof.fullName
     session_context['session_icon'] = tprof.prettyIcon
     session_context['session_species'] = tprof.species
     session_context['session_energy'] = tprof.energy
-    session_context['species_posts'] = 0
-    if tprof.isPredator:
-        session_context['species_posts'] = tprof.post_set.filter(tags=Tags.predation).count()
-    if tprof.isForager:
-        session_context['species_posts'] = tprof.post_set.filter(tags=Tags.grazing).count()
+    session_context['species_meals'] = tprof.meals
     session_context['session_lock'] = request.session['session_lock']
+    session_context['session_activity'] = tprof.recentActivity
     
     # HANDLING FOOD
     session_context['is_pred_prey'] = siteHelpers.isPredatorPrey(tprof.species)
@@ -45,11 +42,8 @@ def sessionProcessor(request):
     # HANDLING FRIENDS
     session_context['is_friend'] = siteHelpers.isFriend(request)
 
-    return session_context
-
-def navigationProcessor(request):
+    #navigation
     nav_context = {}
-    tprof = Profile.objects.get(id=request.session['session_id'])
     currentPosition = request.session['nav_position']
     nav_context['nav_position'] = currentPosition
     nav_context['selected_trail'] = request.session['selected_trail']
@@ -64,7 +58,7 @@ def navigationProcessor(request):
     nav_context['prev_profile'] = navHelpers.previousProfile(currentPosition, tprof, trail)
     nav_context['next_profile'] = navHelpers.nextProfile(currentPosition, tprof, trail)
     
-    return nav_context
+    return dict(session_context.items() + nav_context.items())
 
 def messageProcessor(request):
     message_context = {}

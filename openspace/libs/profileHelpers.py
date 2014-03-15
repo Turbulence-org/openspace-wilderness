@@ -142,6 +142,7 @@ def eatPrey(predator, prey):
     and Posts are created for both predator and prey.
     """
     predator.energy += prey.energy
+    predator.meals += 1
     predator.save()
     prey.die()
     postOut = 'eaten by [ ' + predator.fullName + ' ]'
@@ -173,6 +174,7 @@ def grazePost(forager, post):
     if len(bite) > 0:
         grazePost = makeTaggedPost(forager, bite, 'grazing')
         forager.energy += len(bite) - bite.count(chompChar) - Profile.objects.filter(species=4).count()
+        forager.meals += 1
         forager.save()
         post.post_content = (post.post_content[0:start] +
             (chompChar * (end-start)) + post.post_content[end+1:])

@@ -33,17 +33,17 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 
 ########## DATABASE CONFIGURATION
-#DATABASES = postgresify()
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': environ.get('AWS_DB_NAME', ''),
-        'USER': environ.get('AWS_DB_USER', ''),
-        'PASSWORD': environ.get('AWS_DB_PW', ''),
-        'HOST': environ.get('AWS_DB_HOST', ''),
-        'PORT': environ.get('AWS_DB_PORT', ''),
-    }
-}
+DATABASES = postgresify() #FOR IN-HEROKU DB
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': environ.get('AWS_DB_NAME', ''),
+#        'USER': environ.get('AWS_DB_USER', ''),
+#        'PASSWORD': environ.get('AWS_DB_PW', ''),
+#        'HOST': environ.get('AWS_DB_HOST', ''),
+#        'PORT': environ.get('AWS_DB_PORT', ''),
+#    }
+#}
 ########## END DATABASE CONFIGURATION
 
 

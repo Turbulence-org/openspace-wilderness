@@ -1,26 +1,30 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 from apps.profiles.models import Profile, Post, Comment
 from apps.tags.models import Tag
 from libs import siteHelpers
+from libs.siteEnums import System
 
 #404
+def openspace404(request):
+    return render(request, 'help.html')
+
+#500
 def openspace404(request):
     return render(request, 'help.html')
 
 #/
 def index(request):
     context = {
-        'profiles': Profile.objects.filter(species=0).order_by('-interest')[:10],
+        'profiles': Profile.objects.exclude(visible=False).order_by('-interest')[:10],
         'posts': Post.objects.order_by('-interest')[:10],
-        'tags': Tag.objects.exclude(name='prey').exclude(name='graze').order_by('-interest')[:20],
+        'tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('-interest')[:20],
         'recent_comments': Comment.objects.order_by('-date_published')[:15],
         'profile_count': Profile.objects.count(),
         'post_count': Post.objects.count(),
         'greeting' : request.session['show_greeting']
     }
-    request.session['show_greeting'] = False
+    request.session['show_greeting'] = True
     return render(request, 'index.html', context)
 
 #search/
@@ -36,19 +40,12 @@ def parkSearch(request):
     posts = None
     if 'query' in request.GET and request.GET['query']:
         query = request.GET['query']
-        rawResults = Post.objects.filter(post_content__contains=query).order_by('-interest')
-        results = Paginator(rawResults, 25)
-        page = request.GET.get('page')
-        try:
-            pagedResults = results.page(page)
-        except PageNotAnInteger:
-            pagedResults = results.page(1)
-        except EmptyPage:
-            pagedResults = results.page(results.num_pages)
+        unpagedResults = Post.objects.filter(post_content__contains=query).order_by('-interest').prefetch_related('post_profile')
+        pagedResults = siteHelpers.paginatorMaker(unpagedResults, request.GET.get('page'), 25)
     context = {
         'search_query': query,
         'search_results': pagedResults,
-        'total_results': rawResults.count(),
+        'total_results': unpagedResults.count(),
         'queries': queriesSubset
     }
     return render(request, 'search-results.html', context)
@@ -79,3 +76,26 @@ def changeBg(request):
 def resetSession(request):
     request.session['new_session'] = True
     return redirect('index')
+    
+#topprofiles/
+def topProfiles(request):
+    unpagedProfiles = Profile.objects.exclude(visible=False).order_by('-interest')[:200]
+    pagedResults = siteHelpers.paginatorMaker(unpagedProfiles, request.GET.get('page'), 50)
+    context = {
+        'profileType': True,
+        'heading': '[ top profiles ]',
+        'paged_results': pagedResults,
+        'total': 100
+    }
+    return render(request, 'results.html', context)
+
+#topposts/
+def topPosts(request):
+    unpagedPosts = Post.objects.order_by('-interest')[:100]
+    pagedResults = siteHelpers.paginatorMaker(unpagedPosts, request.GET.get('page'), 25)
+    context = {
+        'heading': '[ top posts ]',
+        'paged_results': pagedResults,
+        'total': 100
+    }
+    return render(request, 'results.html', context)

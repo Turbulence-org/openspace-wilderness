@@ -4,7 +4,7 @@
     {% load staticfiles %}
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="[openspace] wilderness - an abandoned and re-wilding abandoned virtual wilderness - created for Turbulence.org 2014 - Andrew T Lyman" />
-    <title>[openspace] {% block pagetitle %}{% endblock %}</title>
+    <title>[ openspace ] {% block pagetitle %}{% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'media/site/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
     <script src="{% static 'scripts/jquery-1.11.0.min.js' %}" type="text/javascript"></script>
@@ -30,9 +30,9 @@
                 <ul id="subNav" class="nav">
                     <li><a href="/"> home </a></li>
                     <li><a href="{% url 'helpPage' %}">help</a></li>
-                    <li><a href="{% url 'infoPage' %}">info</a></li>
+                    <li><a href="{% url 'infoPage' %}">data</a></li>
                     <li><a href="{% url 'creditsPage' %}">credits</a></li>
-                    <li><a data-mark="searchBox" class="toggle">search</a></li>
+                    <li>[<a data-mark="searchBox" class="toggle"> search </a>]</li>
                 </ul>
                 <ul id="mainNav" class="nav">
                     <li><a href="{% url 'tags:tags' %}">trails</a></li>

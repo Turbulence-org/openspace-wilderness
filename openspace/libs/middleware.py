@@ -49,8 +49,8 @@ class LifeIsHard(object):
     """Drains life of an active type session profile if viewing a page that depletes energy."""
     
     def process_request(self, request):
-        if siteHelpers.fairPlay(request):
-            profile = Profile.objects.get(id=request.session['session_id'])
+        profile = Profile.objects.get(id=request.session['session_id'])
+        if siteHelpers.fairPlay(profile, request):
             profile.drain()
             if profile.isDead:
                 request.session['session_death'] = True

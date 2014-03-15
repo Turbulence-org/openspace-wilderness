@@ -154,7 +154,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # openspace context processors
     'libs.contextProcessors.siteProcessor',
     'libs.contextProcessors.sessionProcessor',
-    'libs.contextProcessors.navigationProcessor',
+    #'libs.contextProcessors.navigationProcessor',
     'libs.contextProcessors.messageProcessor',
 )
 

@@ -39,7 +39,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/nada/Contract/openSpace/djangoSkel/openspace/env"
+VIRTUAL_ENV="/Users/nada/Contract/openSpace/djangoSkel/openspace/ENV"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

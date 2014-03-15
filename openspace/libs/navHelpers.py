@@ -26,7 +26,7 @@ def randomProfile(currentId, profile, trail):
     return selectedProfile.id
 
 def nextProfile(currentId, profile, trail):
-    """Gets and returns the next Profile id based on selected Trail."""
+    """Gets and returns a Profile id greater than current position based on selected Trail."""
     if profile.isPredator:
         prey = randomEncounter()
         if prey:
@@ -36,13 +36,13 @@ def nextProfile(currentId, profile, trail):
         if not next:
             next = Profile.objects.filter(tags=trail).order_by('position')[0:1]
     else:
-        next = Profile.objects.filter(position__gt=currentId).filter(visible=True).order_by('position')[0:1]
+        next = Profile.objects.exclude(visible=False).filter(position__gt=currentId).order_by('position')[0:1]
         if not next:
             next = Profile.objects.filter(visible=True).order_by('position')[0:1]
     return next[0].id
 
 def previousProfile(currentId, profile, trail):
-    """Gets and returns the previous Profile id based on selected Trail."""
+    """Gets and returns a Profile id less than current position based on selected Trail."""
     if profile.isPredator:
         prey = randomEncounter()
         if prey:
@@ -53,8 +53,8 @@ def previousProfile(currentId, profile, trail):
             end = Profile.objects.filter(tags=trail).order_by('position').count()
             prev = [Profile.objects.filter(tags=trail).order_by('position')[end-1]]
     else:
-        prev = Profile.objects.filter(position__lt=currentId).filter(visible=True).order_by('-position')[0:1]
+        prev = Profile.objects.exclude(visible=False).filter(position__lt=currentId).order_by('-position')[0:1]
         if not prev:
-            end = Profile.objects.filter(visible=True).order_by('position').count()
-            prev = [Profile.objects.filter(visible=True).order_by('position')[end-1]]
+            end = Profile.objects.exclude(visible=False).order_by('position').count()
+            prev = [Profile.objects.exclude(visible=False).order_by('position')[end-1]]
     return prev[0].id

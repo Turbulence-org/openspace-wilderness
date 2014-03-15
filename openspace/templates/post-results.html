@@ -1,0 +1,9 @@
+{% if paged_results %}{% for post in paged_results %}
+    <a href="{% url 'profiles:singlePost' post.post_profile.id post.id %}"><div class="wideListing textBlock">
+    <h5>{{ post.post_profile }}</h5>
+    <h5>{{ post.date_published|date:"F j, Y - fA" }}</h5>
+    <p>{{ post.post_content }}</p>
+    </div></a>
+{% endfor %}
+{% else %}<p class="strong vCenter">nothing here, chief</p>{% endif %}
+<div class="clear"></div>

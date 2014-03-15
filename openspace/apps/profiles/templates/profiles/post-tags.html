@@ -9,6 +9,6 @@
             <input type="submit" class="button" value="add tags" />
         </form>
         <div class="clear"></div>
-        <p class="small justify mono">{% for tag in tags %}<a data-flag="{{post.id}}" data-tag="{{ tag.name|lower }}" class="postTag">{{ tag.name|lower }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+        <p class="small justify mono">{% for tag in auto_tags %}<a data-flag="{{post.id}}" data-tag="{{ tag.name|lower }}" class="postTag">{{ tag.name|lower }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
     </div>
 </div>

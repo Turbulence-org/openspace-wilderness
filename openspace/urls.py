@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^profiles/', include('apps.profiles.urls', namespace='profiles')),
     url(r'^tags/', include('apps.tags.urls', namespace='tags')),
     url(r'^search/$', views.parkSearch, name='parkSearch'),
+    url(r'^topprofiles/$', views.topProfiles, name='topProfiles'),
+    url(r'^topposts/$', views.topPosts, name='topPosts'),
     url(r'^changebg/$', views.changeBg, name='changeBg'),
     url(r'^resetsession/$', views.resetSession, name='resetSession'),
 )

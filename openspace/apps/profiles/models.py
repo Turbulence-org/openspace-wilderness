@@ -43,7 +43,8 @@ class Profile(models.Model):
     img_number = models.PositiveIntegerField(max_length=4, default=1)
     tags = models.ManyToManyField(Tag, blank=True)
     interest = models.PositiveIntegerField(max_length=5, default=0)
-    energy = models.PositiveIntegerField(max_length=3, default=1)
+    energy = models.PositiveIntegerField(max_length=4, default=1)
+    meals = models.PositiveIntegerField(max_length=3, default=0)
     visible = models.BooleanField(default=True)
     species = models.PositiveIntegerField(max_length=1, default=Species.abandoned)
     
@@ -149,7 +150,7 @@ class Profile(models.Model):
         self.energy = 0
         self.visible = True
         self.last_login = timezone.now() 
-        self.img_number = randint(1, returnCount('dead'))
+        self.img_number = randint(1, returnCount('dead')/2)
         self.save()
 
 

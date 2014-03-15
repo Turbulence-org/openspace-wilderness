@@ -5,7 +5,7 @@ from django.utils import timezone
 from apps.profiles.models import Profile, Post, Comment
 from apps.tags.models import Tag
 from apps.profiles.forms import CommentForm, ProfileTagForm, PostTagForm
-from libs.siteEnums import Notification, Tags
+from libs.siteEnums import System, Notification, Tags
 from libs import siteHelpers, profileHelpers
 from random import randint
 import re
@@ -16,10 +16,10 @@ def index(request):
 
 #/profiles/<profile_id>/    
 def single(request, profile_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
+    profile = get_object_or_404(Profile.objects.prefetch_related('post_set', 'tags'), pk=profile_id)
     request.session['nav_position'] = profile.position
     request.session['nav_id'] = profile_id
-    allPosts = profile.post_set.all()
+    allPosts = profile.post_set.all().prefetch_related('comment_set', 'tags')
     posts = Paginator(allPosts, 12)
     page = request.GET.get('page')
     try:
@@ -34,18 +34,18 @@ def single(request, profile_id):
         'comment_form': CommentForm(auto_id=False),
         'profile_tag_form': ProfileTagForm(auto_id=False),
         'post_tag_form': PostTagForm(auto_id=False),
-        'tags': Tag.objects.all().order_by('-interest')[:30],
+        'auto_tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('-interest','name')[:30],
         'grazable': True
     }
     return render(request, 'profiles/single-profile.html', context)
 
 #/profiles/<profile_id>/friends/
 def friends(request, profile_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
+    profile = get_object_or_404(Profile.objects.select_related('friends'), pk=profile_id)
     context = {
         'profile': profile,
         'profile_tag_form': ProfileTagForm(auto_id=False),
-        'tags': Tag.objects.all().order_by('name'),
+        'auto_tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('-interest','name')[:30],
     }
     return render(request, 'profiles/friends.html', context)
 
@@ -70,11 +70,11 @@ def makeFriend(request, profile_id):
 
 #/profiles/<profile_id>/tags/
 def profileTags(request, profile_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
+    profile = get_object_or_404(Profile.objects.prefetch_related('tags'), pk=profile_id)
     context = {
         'profile': profile,
         'profile_tag_form': ProfileTagForm(auto_id=False),
-        'tags': Tag.objects.all().order_by('-interest')[:30]
+        'auto_tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('name')[:30]
     }
     return render(request, 'profiles/tags.html', context)
 
@@ -90,8 +90,8 @@ def profileDeath(request, profile_id):
     
 #/profiles/<profile_id>/post/<post_id>/
 def singlePost(request, profile_id, post_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
-    post = get_object_or_404(Post, pk=post_id)
+    profile = get_object_or_404(Profile.objects.prefetch_related('post_set'), pk=profile_id)
+    post = get_object_or_404(Post.objects.prefetch_related('comment_set', 'tags'), pk=post_id)
     request.session['nav_position'] = profile.position
     request.session['nav_id'] = profile_id
     context = {
@@ -100,7 +100,7 @@ def singlePost(request, profile_id, post_id):
         'comment_form': CommentForm(auto_id=False),
         'profile_tag_form': ProfileTagForm(auto_id=False),
         'post_tag_form': PostTagForm(auto_id=False),
-        'tags': Tag.objects.all().order_by('name'),
+        'auto_tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('name')[:30],
         'grazable': True
         }
     return render(request, 'profiles/single-post.html', context)
@@ -199,7 +199,7 @@ def eatProfile(request, profile_id):
     
 #/profiles/5/graze
 def grazeProfile(request, profile_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
+    profile = get_object_or_404(Profile.objects.prefetch_related('post_set'), pk=profile_id)
     targetPost = profile.post_set.exclude(tags=Tags.protected).order_by('?')
     if targetPost:
         if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost[0]):
