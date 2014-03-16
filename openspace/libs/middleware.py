@@ -20,7 +20,7 @@ class SessionSetup(object):
     def process_request(self, request):
         if 'new_session' not in request.session or request.session['new_session'] is True:
             if 'session_anon' not in request.session:
-                entry_user = profileHelpers.makeAnonymous()
+                entry_user = Profile.objects.filter(Species.visitor).order_by('?')[0]
             else:
                 entry_user = Profile.objects.get(id=request.session['session_anon'])
             
