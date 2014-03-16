@@ -42,8 +42,7 @@ class SessionSetup(object):
                 ('session_lock', False),
                 ('profile_interest_collection', str(entry_user.id)),
                 ('post_interest_collection', ''),
-                ('notification', 0),
-                ('stop_loop', stop_loop)
+                ('notification', 0)
             )
         
             for k, v in request_defaults:
