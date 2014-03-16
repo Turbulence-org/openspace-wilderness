@@ -25,7 +25,7 @@ class SessionSetup(object):
                 stop_loop = True
             request.session.flush()
             
-            if 'session_anon' not in request.session:
+            if stop_loop == True and 'session_anon' not in request.session:
                 entry_user = profileHelpers.makeAnonymous()
             
             entry_nav_profile = Profile.objects.filter(species=Species.abandoned).order_by('?')[0]
