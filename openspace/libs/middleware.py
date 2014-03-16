@@ -19,6 +19,10 @@ class SessionSetup(object):
     
     def process_request(self, request):
         if 'new_session' not in request.session or request.session['new_session'] is True:
+            if 'stop_loop' in request.session:
+                stop_loop = request.session['stop_loop']
+            else:
+                stop_loop = True
             request.session.flush()
             
             if 'session_anon' not in request.session:
@@ -41,7 +45,8 @@ class SessionSetup(object):
                 ('session_lock', False),
                 ('profile_interest_collection', str(entry_user.id)),
                 ('post_interest_collection', ''),
-                ('notification', 0)
+                ('notification', 0),
+                ('stop_loop', stop_loop)
             )
         
             for k, v in request_defaults:
