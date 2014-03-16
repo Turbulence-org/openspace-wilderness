@@ -19,15 +19,12 @@ class SessionSetup(object):
     
     def process_request(self, request):
         if 'new_session' not in request.session or request.session['new_session'] is True:
-            if 'stop_loop' in request.session:
-                stop_loop = request.session['stop_loop']
+            if 'session_anon' not in request.session:
+                entry_user = profileHelpers.makeAnonymous(stop_loop)
             else:
-                stop_loop = True
+                entry_user = Profile.objects.get(id=request.session['session_anon'])
+            
             request.session.flush()
-            
-            if stop_loop == True and 'session_anon' not in request.session:
-                entry_user = profileHelpers.makeAnonymous()
-            
             entry_nav_profile = Profile.objects.filter(species=Species.abandoned).order_by('?')[0]
             
             request_defaults = (
