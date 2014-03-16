@@ -8,7 +8,7 @@ from libs.siteEnums import Tags, Notification
 #/tags/
 def tags(request):
     context = {'tags': Tag.objects.exclude(interest=0).filter(id__gt=7).order_by('name')}
-    return render(request, 'tags/tags.html', context)
+    return render(request, 'tags/trails.html', context)
 
 #/tags/<tag_id>/
 def tag(request, tag_id):

@@ -1,3 +1,4 @@
+{% extends 'results.html' %}{% block results %}
 {% if paged_results %}{% for post in paged_results %}
     <a href="{% url 'profiles:singlePost' post.post_profile.id post.id %}"><div class="wideListing textBlock">
     <h5>{{ post.post_profile }}</h5>
@@ -6,4 +7,4 @@
     </div></a>
 {% endfor %}
 {% else %}<p class="strong vCenter">nothing here, chief</p>{% endif %}
-<div class="clear"></div>
+<div class="clear"></div>{% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block pagetitle %} {{ profile.fullName }}{% endblock %}
+{% block pagetitle %}{{ profile.fullName }}{% endblock %}
 {% block body %}<div id="leftCol" class="col">
     <div id="profile" class="box">
         <div class="heading">
@@ -26,7 +26,7 @@
     {% include 'profiles/profile-tags.html' %}
     {% if profile.blog_url %}<div id="url" class="box gray">
         <div class="content vCenter">
-            <strong><a href="{{ profile.blog_url }}" target="_blank">{{ profile.fitUrl }}</a></strong>
+            <h4 class="strong"><a href="{{ profile.blog_url }}" target="_blank">{{ profile.fitUrl }}</a></h4>
         </div>
     </div> <!-- END url box -->{% endif %}
     <div id="friends" class="box">
@@ -44,7 +44,7 @@
     </div> <!-- END friends box -->
     <div id="posts" class="box">
         <div class="heading">
-            <h3>display</h3>
+            <h3>views</h3>
         </div>
         <div class="content">
             <h4><a href="{% url 'profiles:single' profile.id %}">view all posts</a> [ {{ profile.post_set.count }} ]</h4>
@@ -55,7 +55,7 @@
 <div id="rightCol" class="col"> <!-- rColWrap -->
     <div id="lastLogin" class="box gray">
         <div class="content vCenter">
-            <strong><span class="light">last login</span> [ {{ profile.last_login|date:"F d, Y"}} ]</strong>
+            <h4 class="strong"><span class="light">last login</span> [ {{ profile.last_login|date:"F d, Y"}} ]</h4>
         </div>
     </div> <!-- END lastLogin box -->
     {% block profile_meat %}{% endblock %} <!-- all posts -->

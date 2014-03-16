@@ -1,3 +1,4 @@
+{% extends 'results.html' %}{% block results %}
 {% if paged_results %}{% for profile in paged_results %}<div class="wideListing profile">
     <a href="{% url 'profiles:single' profile.id %}"><img class="jsFade icon allRound" src="{{ STATIC_URL }}{{ profile.prettyIcon }}" alt="profile icon" /></a>
     <h4><a href="{% url 'profiles:single' profile.id %}">{{ profile.fullName }}</a></h4>
@@ -5,4 +6,4 @@
     <h4>interest [ {{ profile.interest }} ]</h4>
 </div>{% endfor %}
 {% else %}<p class="vCenter">nothing here, chief</p>{% endif %}
-<div class="clear"></div>
+<div class="clear"></div>{% endblock %}

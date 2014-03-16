@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Count
+from django.utils.functional import cached_property
 
 # TAG MODEL
 class Tag(models.Model):

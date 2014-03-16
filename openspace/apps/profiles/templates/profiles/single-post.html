@@ -2,5 +2,9 @@
 {% block pagetitle %} {{ post.date_published }}{% endblock %}
 {% block profile_meat %}
 {% include 'profiles/post-display.html' %}
-{% include 'profiles/view-all-posts.html' %}
+<div class="box gray">
+    <div class="content vCenter">
+        <h4 class="strong"><a href="{% url 'profiles:single' profile.id %}">view all posts</a> [ {{ profile.post_set.count }} ]</h4>
+    </div>
+</div>
 {% endblock %}

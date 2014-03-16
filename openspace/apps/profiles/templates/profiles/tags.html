@@ -1,5 +1,5 @@
 {% extends 'profiles/profile-base.html' %}
-{% block title %}{{ profile.fullName }}'s  [ tags ]{% endblock %}
+{% block pagetitle %}{{ profile.fullName }}'s  [ tags ]{% endblock %}
 {% block profile_meat %}
 <div id="friends" class="box">
     <div class="heading">
@@ -13,5 +13,9 @@
         <div class="clear"></div>
     </div>
 </div>
-{% include 'profiles/view-all-posts.html' %}
+<div class="box gray">
+    <div class="content vCenter">
+        <h4 class="strong"><a href="{% url 'profiles:single' profile.id %}">view all posts</a> [ {{ profile.post_set.count }} ]</h4>
+    </div>
+</div>
 {% endblock %}

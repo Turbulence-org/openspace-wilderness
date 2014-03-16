@@ -4,6 +4,7 @@ from apps.profiles.models import Profile, Post, Comment
 from apps.tags.models import Tag
 from libs import siteHelpers
 from libs.siteEnums import System
+import urllib
 
 #404
 def openspace404(request):
@@ -42,22 +43,23 @@ def parkSearch(request):
         query = request.GET['query']
         unpagedResults = Post.objects.filter(post_content__contains=query).order_by('-interest').prefetch_related('post_profile')
         pagedResults = siteHelpers.paginatorMaker(unpagedResults, request.GET.get('page'), 25)
+        heading = '[ ' + str(unpagedResults.count()) +' ] result for [ ' + query + ' ]'
     context = {
+        'heading': heading,
+        'paged_results': pagedResults,
         'search_query': query,
-        'search_results': pagedResults,
-        'total_results': unpagedResults.count(),
-        'queries': queriesSubset
+        'query': urllib.urlencode(queriesSubset) + '&'    
     }
     return render(request, 'search-results.html', context)
 
 #info/
-def infoPage(request):
+def dataPage(request):
     context = {
         'profile_count': Profile.objects.count(),
         'post_count': Post.objects.count(),
     }
     context.update(siteHelpers.parkDataProcessor())
-    return render(request, 'info.html', context)
+    return render(request, 'data.html', context)
 
 #help/
 def helpPage(request):
@@ -83,19 +85,17 @@ def topProfiles(request):
     pagedResults = siteHelpers.paginatorMaker(unpagedProfiles, request.GET.get('page'), 50)
     context = {
         'profileType': True,
-        'heading': '[ top profiles ]',
+        'heading': '[ top profiles ] 200',
         'paged_results': pagedResults,
-        'total': 100
     }
-    return render(request, 'results.html', context)
+    return render(request, 'profile-results.html', context)
 
 #topposts/
 def topPosts(request):
     unpagedPosts = Post.objects.order_by('-interest')[:100]
     pagedResults = siteHelpers.paginatorMaker(unpagedPosts, request.GET.get('page'), 25)
     context = {
-        'heading': '[ top posts ]',
+        'heading': '[ top posts ] 100',
         'paged_results': pagedResults,
-        'total': 100
     }
-    return render(request, 'results.html', context)
+    return render(request, 'post-results.html', context)

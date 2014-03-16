@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.functional import cached_property
 from apps.tags.models import Tag
 from libs.siteEnums import Gender, Species
 from libs.auxHelpers import returnCount
@@ -48,11 +49,11 @@ class Profile(models.Model):
     visible = models.BooleanField(default=True)
     species = models.PositiveIntegerField(max_length=1, default=Species.abandoned)
     
-    @property
+    @cached_property
     def fullName(self):
         return self.fname + ' ' + self.lname
     
-    @property
+    @cached_property
     def sex(self):
         if self.gender == Gender.female:
             return 'female'
@@ -106,7 +107,7 @@ class Profile(models.Model):
         if self.species == Species.dead:
             return True
     
-    @property
+    @cached_property
     def fitUrl(self):
         if len(self.blog_url) > 50:
             return self.blog_url[7:]
@@ -135,7 +136,7 @@ class Profile(models.Model):
     @property
     def recentActivity(self):
         return self.post_set.all().order_by('-date_published')[:3]
-        
+    
     def __unicode__(self):
         return self.fullName
         
@@ -177,12 +178,12 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-date_published']
-        
-    @property
+    
+    @cached_property
     def postProfileName(self):
         return self.post_profile.fullName
     
-    @property
+    @cached_property
     def fitContent(self):
         return self.post_content[:300]
     
@@ -217,13 +218,13 @@ class Comment(models.Model):
         default=timezone.now())
     comment_content = models.TextField()
     
+    @cached_property
+    def commentProfileId(self):
+        return self.comment_profile_id
+    
+    @cached_property
+    def commentPostId(self):
+        return self.comment_post_id
+    
     def __unicode__(self):
         return str(self.comment_profile) + ' / ' + self.comment_content[:11]
-    
-    @property
-    def commentProfileId(self):
-        return self.comment_profile.id
-    
-    @property
-    def commentPostId(self):
-        return self.comment_post.id
