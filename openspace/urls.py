@@ -5,7 +5,7 @@ from django.views.decorators.cache import cache_page
 admin.autodiscover()
 
 handler404 = 'views.openspace404'
-handler500 = 'views.openspace500'
+#handler500 = 'views.openspace500'
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),

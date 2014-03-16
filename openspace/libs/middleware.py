@@ -18,7 +18,7 @@ class SessionSetup(object):
     """Creates and populates a new user session."""
     
     def process_request(self, request):
-        if 'new_session' not in request.session or request.session['new_session'] is True:
+        if 'new_sessio' not in request.session or request.session['new_session'] is True:
             if 'session_anon' not in request.session:
                 entry_user = profileHelpers.makeAnonymous(stop_loop)
             else:
