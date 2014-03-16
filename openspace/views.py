@@ -11,7 +11,7 @@ def openspace404(request):
     return render(request, 'help.html')
 
 #500
-def openspace404(request):
+def openspace500(request):
     return render(request, 'help.html')
 
 #/
