@@ -133,7 +133,7 @@ def makeBirthPost(profile):
 def makeDeathPost(profile):
     """Creates a Post announcing the death of a Profile in the wilderness. Returns nothing."""
     postOut = '[ ' + profile.fullName + ' ] died of starvation'
-    makeTaggesPost(profile, postOut, 'death')
+    makeTaggedPost(profile, postOut, 'death')
 
 def eatPrey(predator, prey):
     """Predator type Profile consumes the energy of a Prey type Profile. Returns True if success.

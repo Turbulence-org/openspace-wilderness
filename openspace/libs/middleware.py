@@ -19,13 +19,16 @@ class SessionSetup(object):
     
     def process_request(self, request):
         if 'new_session' not in request.session or request.session['new_session'] is True:
-            
             request.session.flush()
-            entry_user = profileHelpers.makeAnonymous()
-            entry_nav_profile = Profile.objects.filter(species=0).order_by('?')[0]
+            
+            if 'session_anon' not in request.session:
+                entry_user = profileHelpers.makeAnonymous()
+            
+            entry_nav_profile = Profile.objects.filter(species=Species.abandoned).order_by('?')[0]
             
             request_defaults = (
                 ('new_session', False),
+                ('session_anon', entry_user.id),
                 ('show_greeting', True),
                 ('page_background', siteHelpers.bgSelect(666)),
                 ('page_banner', siteHelpers.bannerSelect(666)),
@@ -63,13 +66,11 @@ class DeathSentence(object):
         if request.session['session_death']:
             request.session['session_death'] = False
             request.session['notification'] = Notification.starvation
-            deadBody = Profile.objects.get(id=request.session['session_id'])
+            deadBody = request.session['session_id']
             
             #new session as visitor
-            profileHelpers.makeAnonymous()
-            newP = Profile.objects.filter(species=Species.visitor).order_by('?')[0]
-            request.session['session_id'] = newP.id
-            request.session['session_species'] = newP.species
+            request.session['session_id'] = request.session['session_anon']
+            request.session['session_species'] = Species.visitor
             request.session['session_lock'] = False
             
-            return redirect('profiles:profileDeath',  deadBody.id)
+            return redirect('profiles:profileDeath',  deadBody)

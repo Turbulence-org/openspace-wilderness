@@ -34,6 +34,22 @@ def initialTags():
         ]
 
 def setupOpen():
+
+    #MAKE RANGER
+    ranger = Profile(
+        fname='Ranger',
+        lname='Wilson',
+        gender=Gender.female,
+        age=30,
+        location='Albuquerque, NM',
+        last_login=timezone.now(),
+        species=Species.system,
+        img_number=1,
+        energy=80,
+        visible=True
+    )
+    ranger.save()
+
     #SETUP ABANDONED PROFILES
     populate(50)
     profiles = Profile.objects.all()
@@ -44,21 +60,6 @@ def setupOpen():
     for t in initialTags():
         d = Tag(name=t)
         d.save()
-    
-    #MAKE RANGER
-    ranger = Profile(
-        fname='Ranger',
-        lname='Wilson',
-        gender=Gender.female,
-        age=30,
-        location='Albuquerque, NM',
-        last_login=timezone.now(),
-        species=Species.system,
-        energy=80,
-        visible=True
-    )
-    ranger.save()
-    assignImages(ranger)
     
     #SEED PREY PROFILES
     for p in initialPreyProfiles():
