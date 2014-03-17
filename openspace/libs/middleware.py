@@ -17,14 +17,16 @@ class SessionSetup(object):
     """Creates and populates a new user session."""
     
     def process_request(self, request):
-        if 'new_session' not in request.session or request.session['new_session'] is True:
+        if 'new_session' not in request.session or request.session['new_session']:
             is_human = False
-            if 'is_human' in request.session:
-                entry_user = profileHelpers.makeAnonymous()
-                is_human = request.session['is_human']
-                request.session['session_anon'] = entry_user.id
             if 'session_anon' in request.session:
                 entry_user = Profile.objects.get(id=request.session['session_anon'])
+            if 'is_human' in request.session:
+                is_human = request.session['is_human']
+                if is_human:
+                    entry_user = profileHelpers.makeAnonymous()
+                    request.session['session_anon'] = entry_user.id
+                    
             else:
                 entry_user = Profile.objects.filter(species=Species.visitor).order_by('?')[0] #rando to get in the door
             request.session.flush()
