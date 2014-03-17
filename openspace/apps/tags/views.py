@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from apps.profiles.models import Profile
 from apps.tags.models import Tag
 from libs import profileHelpers
-from libs.siteEnums import Tags, Notification
+from libs.siteEnums import Tags
 
 #/tags/
 def tags(request):
@@ -26,17 +26,18 @@ def selectTrail(request, tag_id):
     if tag.interest > 0:
         if request.session['selected_trail'] == tag.name:
             request.session['selected_trail'] = 'no'
-            request.session['notification'] = Notification.trail
+            request.session['notification'] = 'trail'
         else:
             request.session['selected_trail'] = tag.name
             postOut = 'following the [ ' + tag.name + ' ] trail' 
             profileHelpers.makeUserPost(request, postOut, 'trail')
+            request.session['notification'] = 'trail'
     else:
-        request.session['notification'] = Notification.nope
+        request.session['notification'] = 'nope'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/tags/deselecttrail/
 def deselectTrail(request):
     request.session['selected_trail'] = 'no'
-    request.session['notification'] = Notification.trail
+    request.session['notification'] = 'trail'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     url(r'^topprofiles/$', cache_page(views.topProfiles, 60*5), name='topProfiles'),
     url(r'^topposts/$', cache_page(views.topPosts, 60*5), name='topPosts'),
     url(r'^changebg/$', views.changeBg, name='changeBg'),
+    url(r'^humanentry/(?P<human_key>\d+)$', views.humanEntry, name='humanEntry'),
     url(r'^resetsession/$', views.resetSession, name='resetSession'),
 )

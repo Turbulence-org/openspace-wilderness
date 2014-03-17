@@ -1,7 +1,7 @@
 {% extends 'sub-base.html' %}
 {% block pagetitle %}wilderness{% endblock %}
 {% block body %}
-{% if greeting %}<div id="help" class="box emblem head">
+<div id="help" class="box emblem head">
     <div class="content">
         <div class="contentBlock bigBlock justify">
             <h3>[ openspace ] primer</h3>
@@ -11,22 +11,34 @@
         </div>
         
         <div class="contentBlock smallBlock"><h3>[ park key ]</h3>
-        <p><span class="mono dark">[+]</span> - add interest<br/>
-        <span class="mono dark">[@]</span> - select trail<br/>
+        <p><span class="mono dark">[@]</span> - select trail<br/>
         <span class="mono dark">[-]</span> - deselect trail<br/>
         <span class="mono dark">[f]</span> - add profile as friend<br/>
+        <span class="mono dark">[+]</span> - add interest<br/>
         <span class="mono dark">[tag]</span> - add tag(s)<br/>
         <span class="mono dark">[comment]</span> - add comment</p>
+        
+        <h3>[ definitions ]</h3>
+        <p><span class="mono dark">[trail]</span> - an explorable area of the park linked by a <span class="mono dark">[tag]</span><br/>
+        <span class="mono dark">[predator]</span> - consumes active profiles for energy<br/>
+        <span class="mono dark">[forager]</span> - grazes the content of posts for energy<br/>
+        <span class="mono dark">[energy]</span> - the consumable resource of active profiles</p>
         </div>
         
-        <div class="contentBlock center smallBlock lastR"><h3>[ park data ]</h3>
-        <p>[ {{ profile_count }} ] total profiles<br/>
-        [ {{ post_count }} ] total posts</p>
+        <div class="contentBlock smallBlock lastR"><h3>[ park data ]</h3>
+        <p><span class="mono dark">[{{ abandoned_pop }}]</span> abandoned profiles<br/>
+        <span class="mono dark">[{{ post_pop }}]</span> abandoned posts<br/>
+        <span class="mono dark">[{{ predator_pop }}]</span> living predators<br/>
+        <span class="mono dark">[{{ forager_pop }}]</span> living foragers<br/>
+        <span class="mono dark">[{{ dead_pop }}]</span> dead things</p>
+        
+        <p><span class="mono dark">[{{ percent_tagged }}%]</span> park tagged<br/>
+        <span class="mono dark">[{{ percent_dead }}%]</span> park profiles dead<br/>
+        <span class="mono dark">[{{ percent_grazed }}%]</span> park content grazed</p>
         </div>
         <div class="clear"></div>
     </div>
 </div>
-{% endif %}
 
 <div class="box">
     <div class="heading">

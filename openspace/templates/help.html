@@ -9,17 +9,27 @@
             <p>Additionally, Visitors may opt to explore the park as either a <strong>[predator]</strong> or a <strong>[forager]</strong> which entreats them to certain attributes and actions - <strong>[predators]</strong> may <strong>[eat]</strong> prey they encounter whereas <strong>[foragers]</strong> may <strong>[graze]</strong> post content. As one of these active profiles, your <strong>[energy]</strong> will be depleted and you may eventually die of starvation if you don't consume a foodsource while you explore the park. As profiles die off, the environment will become littered with the dead explorers, opportunists, and colonizers that have wandered in.</p>
         </div>
         
-        <div class="contentBlock smallBlock justify"><h3>[ navigation key ]</h3>
-        <p>Additionally, Visitors may opt to explore the park as either a <strong>[predator]</strong> or a <strong>[forager]</strong> which entreats them to certain attributes and actions - <strong>[predators]</strong> may <strong>[eat]</strong> prey they encounter whereas <strong>[foragers]</strong> may <strong>[graze]</strong> post content. As one of these active profiles, your <strong>[energy]</strong> will be depleted and you may eventually die of starvation if you don't consume a foodsource while you explore the park. As profiles die off, the environment will become littered with the dead explorers, opportunists, and colonizers that have wandered in.</p>
-        </div>
-        
-        <div class="contentBlock smallBlock lastR"><h3>[ park data ]</h3>
+        <div class="contentBlock smallBlock">
+        <h3>[ park key ]</h3>
         <p><span class="mono dark">[+]</span> - add interest<br/>
         <span class="mono dark">[@]</span> - select trail<br/>
         <span class="mono dark">[-]</span> - deselect trail<br/>
         <span class="mono dark">[f]</span> - add profile as friend<br/>
         <span class="mono dark">[tag]</span> - add tag(s)<br/>
         <span class="mono dark">[comment]</span> - add comment</p>
+        
+        <h3>[ definitions ]</h3>
+        <p><span class="mono dark">[trail]</span> - an explorable area of the park linked by a <span class="mono dark">[tag]</span><br/>
+        <span class="mono dark">[predator]</span> - consumes active profiles for energy<br/>
+        <span class="mono dark">[forager]</span> - grazes the content of posts for energy<br/>
+        <span class="mono dark">[energy]</span> - the consumable resource of active profiles</p>
+        </div>
+        
+        <div class="contentBlock smallBlock lastR">
+        <h3>speak with the <a href="{% url 'profiles:single' ranger_id %}">[ Ranger ]</a></h3>
+        <div id="picWrapper" class="center"><div id="profilePic"><a href="{% url 'profiles:single' ranger_id %}"><img class="round" src="{{ STATIC_URL }}{{ ranger_icon }}" alt="ranger icon" /></a></div></div>
+        <div class="clear"><br/></div>
+        <p><em>"We are happy to answer any questions you may have. Thank you for visiting the openspace wilderness."<em></p>
         </div>
         <div class="clear"></div>
     </div>

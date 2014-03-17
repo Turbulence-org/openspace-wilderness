@@ -1,13 +1,15 @@
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
 from libs import navHelpers, siteHelpers
-from libs.siteEnums import Notification, Species, Tags
+from libs.siteEnums import Species, Tags
 
 def siteProcessor(request):
     background = 'media/backgrounds/bg-' + str(request.session['page_background']) + '.jpg'
     request.session['page_banner'] = siteHelpers.bannerSelect(request.session['page_banner'])
     banner_src = 'media/banners/banner-' + str(request.session['page_banner']) + '.jpg'
     site_context = {
+        'human_key': 84990210,
+        'is_human': request.session['is_human'],
         'background': background,
         'banner_src': banner_src,
         'path': request.get_full_path()
@@ -64,9 +66,9 @@ def messageProcessor(request):
     message_context = {}
     message_context['message_flag'] = False
     current_notice = request.session['notification']
-    if current_notice != Notification.no_notification:
+    if current_notice:
         message_context['message_flag'] = True
         message_context['message'] = siteHelpers.getTheMessage(request, current_notice)
-    request.session['notification'] = Notification.no_notification
+    request.session['notification'] = None
     
     return message_context

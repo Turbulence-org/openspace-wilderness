@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
-from libs.siteEnums import Species
+from libs.siteEnums import Species, Tags
 from libs.auxHelpers import returnCount
 from random import randint
 from sys import path
@@ -58,7 +58,7 @@ def isSelf(request):
 def isKosher(request):
     """Returns True if current Profile is grazable by Forager type Profile."""
     if not isSelf(request) and request.session['session_species'] == Species.forager:
-        if not Profile.objects.get(id=request.session['nav_id']).isActive and not excludeUrls(request.get_full_path()):
+        if isAbandoned(Profile.objects.get(id=request.session['nav_id']).species) and not excludeUrls(request.get_full_path()):
             return True
     return False
 
@@ -84,6 +84,11 @@ def isFriend(request):
 def isPredatorPrey(species):
     """Returns True is Profile is species type forager or predator."""
     if int(species) == Species.forager or int(species) == Species.predator:
+        return True
+    return False
+
+def isAbandoned(species):
+    if int(species) == Species.abandoned:
         return True
     return False
 
@@ -139,37 +144,28 @@ def bgSelect(current):
         selection = 1
     return selection
     
-def getTheMessage(request, i):
+def getTheMessage(request, key):
     """Returns message from collection of site messages for display in message tag."""
     navName = Profile.objects.get(id=request.session['nav_id']).fullName
-    siteMessages = [
-        'Null',
-        # birth 1
-        'welcome to the [openspace] wilderness',
-        # death 2
-        'you have died',
-        # starvation 3
-        'you have died from starvation',
-        # predation 4
-        'you ate [' + navName + '] to sustain life',
-        # grazing 5
-        'you grazed to sustain life',
-        # made_friends 6
-        'you made friends with [' + navName + ']',
-        # comment 7
-        'you commented on a post',
-        # interest 8
-        'you liked something',
-        # profile_tag 9
-        'you tagged [' + navName + ']',
-        # post_tag 10
-        'you tagged a post',
-        # trail 11
-        'following [' + request.session['selected_trail'] + '] trail'
-        ]
-    if i < len(siteMessages):
-        return siteMessages[i-1]
-    return "something strange has happened"
+    siteMessages = {
+        'birth': 'welcome to the [openspace] wilderness',
+        'death': 'you have died',
+        'starvation': 'you died of starvation',
+        'predator': 'you are now a predator',
+        'forager': 'you are now a forager',
+        'predation': 'you ate [' + navName + '] to sustain life',
+        'grazing': 'you grazed to sustain life',
+        'friends': 'you made friends with [' + navName + ']',
+        'comment': 'you commented on a post',
+        'likeprofile': 'you like [' + navName + ']',
+        'likepost': 'you like a post by [' + navName + ']',
+        'tagprofile': 'you tagged [' + navName + ']',
+        'tagpost': 'you tagged a post by [' + navName + ']',
+        'trail': 'following [' + request.session['selected_trail'] + '] trail'
+    }
+    if key in (siteMessages):
+        return siteMessages[key]
+    return "you have done something beyond imagining"
 
 def parkDataProcessor():
     """Returns a dictionary containing data about the site."""
@@ -177,22 +173,29 @@ def parkDataProcessor():
     postCount = Post.objects.all().count()
     activeCount = Profile.objects.exclude(species=Species.abandoned).count()
     data = {}
-    #(data['tagged_profile_count'],
-    #    data['tagged_post_count'],
-    #    data['tagged_percent']) = taggedProcessor(profileCount + postCount)
-    #data['dead_count'], data['dead_percent'] = deadProcessor(activeCount)
+    data = {
+        'abandoned_pop': Profile.objects.filter(species=Species.abandoned).count(),
+        'post_pop': Post.objects.all().count(),
+        'predator_pop': Profile.objects.filter(species=Species.predator).count(),
+        'forager_pop': Profile.objects.filter(species=Species.forager).count(),
+        'dead_pop': Profile.objects.filter(species=Species.dead).count(),
+        'percent_tagged': quickIntPercent(profileCount, Profile.objects.annotate(num_tags=Count('tags')).filter(num_tags__gt=0).count()),
+        'percent_dead': quickIntPercent(profileCount, Profile.objects.filter(species=Species.dead).count()),
+        'percent_grazed': grazedProcessor()
+    }
     return data
 
-def taggedProcessor(total):
-    """Figures a percentage of total Park Objects tagged and returns counts and percentage."""
-    taggedProfiles = Profile.objects.annotate(num_tags=Count('tags')).filter(num_tags__gt=0).count()
-    taggedPosts = Post.objects.annotate(num_tags=Count('tags')).filter(num_tags__gt=0).count()
-    return quickIntPercent(total, (taggedProfiles + taggedPosts))
-
-def deadProcessor(profileCount):
-    """Figures a percentage of total Profiles dead and returns count and percentage."""
-    deadProfiles = Profile.objects.filter(species=Species.dead).count()
-    return deadProfiles, quickIntPercent(profileCount, deadProfiles)
+def grazedProcessor():
+    """Calculates the amount of the total post content grazed in the park."""
+    ungrazed = Post.objects.exclude(tags=Tags.grazing).values_list('post_content', flat=True)
+    ungrazedCount = 0
+    for u in ungrazed:
+        ungrazedCount += len(u)
+    grazed = Post.objects.filter(tags=Tags.grazing).values_list('post_content', flat=True)
+    grazedCount = 0
+    for g in grazed:
+        grazedCount += len(g)
+    return quickIntPercent(ungrazedCount, grazedCount)
     
 def quickIntPercent(total, subset):
     """Figures and returns a percentage given a total and a subset."""

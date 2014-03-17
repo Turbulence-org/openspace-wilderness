@@ -5,7 +5,7 @@ from django.utils import timezone
 from apps.profiles.models import Profile, Post, Comment
 from apps.tags.models import Tag
 from apps.profiles.forms import CommentForm, ProfileTagForm, PostTagForm
-from libs.siteEnums import System, Notification, Tags
+from libs.siteEnums import System, Tags
 from libs import siteHelpers, profileHelpers
 from random import randint
 import re
@@ -59,12 +59,12 @@ def makeFriend(request, profile_id):
     friend = get_object_or_404(Profile, pk=profile_id)
     user = Profile.objects.get(id=request.session['session_id'])
     if friend not in user.friends.all():
-        request.session['notification'] = Notification.made_friend
+        request.session['notification'] = 'friends'
         user.friends.add(friend)
         user.save()
         friend.friends.add(user)
         friend.save()
-        postOut = 'made friends with [ ' + friend.fullName + ' ]'
+        postOut = 'made friends with ' + friend.fullName
         profileHelpers.makeUserPost(request, postOut, 'friends')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
@@ -84,7 +84,7 @@ def profileDeath(request, profile_id):
     if profile.isDead:
         profileHelpers.makeDeathPost(profile)
         #profile.die()
-        request.session['notification'] = Notification.starvation
+        request.session['notification'] = 'starvation'
         request.session['nav_position'] = profile.position
     return redirect('profiles:single', profile.id)
     
@@ -119,8 +119,9 @@ def addComment(request, profile_id, post_id):
             new_comment.comment_post = post
             new_comment.date_published = timezone.now()
             new_comment.save()
-            postOut = '[ left comment ] ' + new_comment.comment_content
+            postOut = 'left comment: ' + new_comment.comment_content
             profileHelpers.makeUserPost(request, postOut, 'comment')
+            request.session['notification'] = 'comment'
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     #TODO error massage
     return redirect('profiles:singlePost', profile_id, post_id)
@@ -132,8 +133,9 @@ def profileInterest(request, profile_id):
     if profile_id not in interestSet and profile_id != request.session['session_id']:
         siteHelpers.upInterest(profile)
         request.session['profile_interest_collection'] += ',' + profile_id
-        postOut = 'likes [ ' + profile.fullName + ' ]'
+        postOut = 'likes ' + profile.fullName
         profileHelpers.makeUserPost(request, postOut, 'interest')
+        request.session['notification'] = 'likeprofile'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/profiles/post/5/postinterest/
@@ -143,8 +145,9 @@ def postInterest(request, post_id):
     if post_id not in interestSet:
         siteHelpers.upInterest(post)
         request.session['post_interest_collection'] += ',' + post_id
-        postOut = 'likes a post by [ ' + post.postProfileName + ' ]'
+        postOut = 'likes ' + post.postProfileName + '\'s post'
         profileHelpers.makeUserPost(request, postOut, 'interest')
+        request.session['notification'] = 'likepost'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
 #/profiles/5/addtags
@@ -156,8 +159,9 @@ def addProfileTags(request, profile_id):
         if form.is_valid:
             new_tags = form.data['pro_new_tags']
             siteHelpers.addTags(profile, new_tags.split(', '))
-            postOut = '[ added tags ] ' + new_tags
+            postOut = 'added tags: ' + new_tags
             profileHelpers.makeUserPost(request, postOut, 'tagged profile')
+            request.session['notification'] = 'tagprofile'
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return redirect('profiles:single', profile_id)
 
@@ -171,8 +175,9 @@ def addPostTags(request, profile_id, post_id):
         if form.is_valid:
             new_tags = form.data['post_new_tags']
             siteHelpers.addTags(post, new_tags.split(', '))
-            postOut = '[ added tags ] ' + new_tags
+            postOut = 'added tags: ' + new_tags
             profileHelpers.makeUserPost(request, postOut, 'tagged post')
+            request.session['notification'] = 'tagpost'
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     #TODO error massage
     return redirect('profiles:post', profile_id, post_id)
@@ -182,11 +187,12 @@ def createProfile(request, species_id):
     if not siteHelpers.isPredatorPrey(species_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     if not request.session['session_lock']:
+        profileHelpers.makeAnonymous()
         newP = profileHelpers.makeProfile(int(species_id))
         request.session['session_id'] = newP.id
         request.session['session_species'] = newP.species
         request.session['session_lock'] = True
-        request.session['notification'] = Notification.birth
+        request.session['notification'] = 'birth'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
 #/profiles/5/eatprofile
@@ -194,7 +200,7 @@ def eatProfile(request, profile_id):
     prey = get_object_or_404(Profile, pk=profile_id)
     predator = Profile.objects.get(id=request.session['session_id'])
     if profileHelpers.eatPrey(predator, prey):
-        request.session['notification'] = Notification.predation
+        request.session['notification'] = 'predation'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
 #/profiles/5/graze
@@ -203,7 +209,7 @@ def grazeProfile(request, profile_id):
     targetPost = profile.post_set.exclude(tags=Tags.protected).order_by('?')
     if targetPost:
         if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost[0]):
-            request.session['notification'] = Notification.grazing
+            request.session['notification'] = 'grazing'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/profiles/5/post/5/graze
@@ -211,5 +217,5 @@ def grazePost(request, profile_id, post_id):
     targetPost = get_object_or_404(Post, pk=post_id)
     if targetPost:
         if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost):
-            request.session['notification'] = Notification.grazing
+            request.session['notification'] = 'grazing'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

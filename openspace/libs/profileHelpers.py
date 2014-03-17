@@ -93,21 +93,14 @@ def makePosts(profile):
     return blogId, url, lastUpdate
 
 def makeUserPost(request, content, tagname):
-    """Creates and returns a new Post object for the session profile and sends a notification flag.
+    """Creates and returns a new Post object for the session profile.
     
     Takes as input request object, post content, and a tag id
     """
     profile = Profile.objects.get(id=request.session['session_id'])
-    newPost = Post(
-        post_content=content,
-        post_profile=profile,
-        date_published=timezone.now(),
-        just_posted=True
-    )
+    newPost = makeTaggedPost(profile, content, tagname)
+    newPost.just_posted = True
     newPost.save()
-    newPost.tags.add(Tag.objects.filter(name=tagname)[0])
-    newPost.save()
-    request.session['notification'] = newPost.tags.all()[0].id
     return newPost
 
 def makeTaggedPost(profile, content, tagname):
@@ -127,12 +120,12 @@ def makeTaggedPost(profile, content, tagname):
 
 def makeBirthPost(profile):
     """Creates a Post announcing the birth of a Profile into the wilderness. Returns nothing."""
-    postOut = '[ ' + profile.fullName + ' ] was born into the [ openspace ] wilderness.'
+    postOut = profile.fullName + ' was born into the openspace wilderness.'
     makeTaggedPost(profile, postOut, 'birth')
 
 def makeDeathPost(profile):
     """Creates a Post announcing the death of a Profile in the wilderness. Returns nothing."""
-    postOut = '[ ' + profile.fullName + ' ] died of starvation'
+    postOut = profile.fullName + ' died of starvation'
     makeTaggedPost(profile, postOut, 'death')
 
 def eatPrey(predator, prey):
@@ -145,9 +138,9 @@ def eatPrey(predator, prey):
     predator.meals += 1
     predator.save()
     prey.die()
-    postOut = 'eaten by [ ' + predator.fullName + ' ]'
+    postOut = 'eaten by ' + predator.fullName
     makeTaggedPost(prey, postOut, 'predation')
-    postOut = 'ate [ ' + prey.fullName + ' ]'
+    postOut = 'ate ' + prey.fullName
     makeTaggedPost(predator, postOut, 'predation')
     return True
 

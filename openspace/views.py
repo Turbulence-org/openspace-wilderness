@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from apps.profiles.models import Profile, Post, Comment
 from apps.tags.models import Tag
 from libs import siteHelpers
-from libs.siteEnums import System
+from libs.siteEnums import System, Species
 import urllib
 
 #404
@@ -17,15 +17,14 @@ def openspace500(request):
 #/
 def index(request):
     context = {
-        'profiles': Profile.objects.exclude(visible=False).order_by('-interest')[:10],
+        'profiles': Profile.objects.filter(species=Species.abandoned).order_by('-interest')[:10],
         'posts': Post.objects.order_by('-interest')[:10],
         'tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('-interest')[:20],
         'recent_comments': Comment.objects.order_by('-date_published')[:15],
         'profile_count': Profile.objects.count(),
         'post_count': Post.objects.count(),
-        'greeting' : request.session['show_greeting']
     }
-    request.session['show_greeting'] = True
+    context.update(siteHelpers.parkDataProcessor())
     return render(request, 'index.html', context)
 
 #search/
@@ -63,7 +62,12 @@ def dataPage(request):
 
 #help/
 def helpPage(request):
-    return render(request, 'help.html')
+    ranger = Profile.objects.filter(species=Species.system)[0]
+    context = {
+        'ranger_id': ranger.id,
+        'ranger_icon': ranger.prettyPic
+    }
+    return render(request, 'help.html', context)
 
 #credits/
 def creditsPage(request):
@@ -72,6 +76,13 @@ def creditsPage(request):
 #changebg/
 def changeBg(request):
     request.session['page_background'] = siteHelpers.bgSelect(request.session['page_background'])
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+#humanentry/3432452
+def humanEntry(request, human_key):
+    secret_key = 84990210
+    if int(human_key) == secret_key:
+        request.session['is_human'] = True
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #resetsession/

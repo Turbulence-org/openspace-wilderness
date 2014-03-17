@@ -29,18 +29,3 @@ class Tags:
     post_tag = 11
     trail = 12
     
-class Notification:
-    no_notification = 0
-    birth = 1
-    death = 2
-    starvation = 3
-    predation = 4
-    grazing = 5
-    made_friend = 6
-    comment = 7
-    interest = 8
-    profile_tag = 9
-    post_tag = 10
-    trail = 11
-    nope = 12
-    
