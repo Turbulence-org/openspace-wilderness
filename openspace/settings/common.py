@@ -132,9 +132,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # openspace middleware
+    'libs.middleware.SessionSetup',
     'libs.middleware.YaHumanUser',
     'libs.middleware.SessionSpeciesError',
-    'libs.middleware.SessionSetup',
     'libs.middleware.LifeIsHard',
     'libs.middleware.DeathSentence',
 )
