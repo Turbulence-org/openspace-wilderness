@@ -56,7 +56,7 @@ def sessionProcessor(request):
         trail = None
     
     # NAVIGATION KEYS
-    nav_context['rand_profile'] = navHelpers.randomProfile(currentPosition, tprof, trail)
+    nav_context['rand_profile'] = navHelpers.randomProfile(tprof, trail)
     nav_context['prev_profile'] = navHelpers.previousProfile(currentPosition, tprof, trail)
     nav_context['next_profile'] = navHelpers.nextProfile(currentPosition, tprof, trail)
     

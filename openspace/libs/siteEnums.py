@@ -1,7 +1,7 @@
 from libs.auxHelpers import returnCount
 
 class System:
-    reservedTags = 7
+    reservedTags = 11
 
 class Gender:
     female = 0
@@ -25,7 +25,6 @@ class Tags:
     friends = 7
     comment = 8
     interest = 9
-    profile_tag = 10
-    post_tag = 11
-    trail = 12
+    tag = 10
+    trail = 11
     

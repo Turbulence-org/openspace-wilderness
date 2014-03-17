@@ -5,12 +5,12 @@ from django.views.decorators.cache import cache_page
 admin.autodiscover()
 
 handler404 = 'views.openspace404'
-#handler500 = 'views.openspace500'
+handler500 = 'views.openspace500'
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index, name='index'),
-    url(r'^info/$', cache_page(views.dataPage, 60*15), name='dataPage'),
+    url(r'^data/$', cache_page(views.dataPage, 60*15), name='dataPage'),
     url(r'^help/$', cache_page(views.helpPage, 6), name='helpPage'),
     url(r'^credits/$', cache_page(views.creditsPage, 6), name='creditsPage'),
     url(r'^profiles/', include('apps.profiles.urls', namespace='profiles')),

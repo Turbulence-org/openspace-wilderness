@@ -120,7 +120,7 @@ def makeTaggedPost(profile, content, tagname):
 
 def makeBirthPost(profile):
     """Creates a Post announcing the birth of a Profile into the wilderness. Returns nothing."""
-    postOut = profile.fullName + ' was born into the openspace wilderness.'
+    postOut = profile.fullName + ' entered the openspace wilderness.'
     makeTaggedPost(profile, postOut, 'birth')
 
 def makeDeathPost(profile):

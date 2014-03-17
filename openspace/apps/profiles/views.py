@@ -187,13 +187,12 @@ def createProfile(request, species_id):
     if not siteHelpers.isPredatorPrey(species_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     if not request.session['session_lock']:
-        profileHelpers.makeAnonymous()
         newP = profileHelpers.makeProfile(int(species_id))
         request.session['session_id'] = newP.id
         request.session['session_species'] = newP.species
         request.session['session_lock'] = True
         request.session['notification'] = 'birth'
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect('profiles:single', newP.id)
     
 #/profiles/5/eatprofile
 def eatProfile(request, profile_id):

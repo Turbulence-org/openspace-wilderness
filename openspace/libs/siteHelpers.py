@@ -57,7 +57,7 @@ def isSelf(request):
 
 def isKosher(request):
     """Returns True if current Profile is grazable by Forager type Profile."""
-    if not isSelf(request) and request.session['session_species'] == Species.forager:
+    if request.session['session_species'] == Species.forager:
         if isAbandoned(Profile.objects.get(id=request.session['nav_id']).species) and not excludeUrls(request.get_full_path()):
             return True
     return False

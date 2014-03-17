@@ -42,7 +42,7 @@
 
 <div class="box">
     <div class="heading">
-        <h3>[ interesting ] profiles</h3>
+        <h3>interesting [ profiles ]</h3>
         <div class="auxAct small mono"><a href="{% url 'topProfiles' %}">[more]</a></div>
     </div>
     <div class="content">
@@ -53,7 +53,7 @@
 {% if posts %}
 <div class="box">
     <div class="heading">
-        <h3>[ interesting ] posts</h3>
+        <h3>interesting [ posts ]</h3>
         <div class="auxAct small mono"><a href="{% url 'topPosts' %}">[more]</a></div>
     </div>
     <div class="content">
@@ -63,7 +63,7 @@
         </div></a> 
         {% endfor %}
         {% else %}
-            <p class="vCenter">nothing here, chief</p>
+            <p class="vCenter">nothing here, move along please</p>
         {% endif %}
         <div class="clear"></div>
     </div>
@@ -71,7 +71,7 @@
 
 <div class="box">
     <div class="heading">
-        <h3>[ interesting ] trails</h3>
+        <h3>interesting [ trails ]</h3>
     </div>
     <div class="content">
         {% for tag in tags %}
@@ -85,7 +85,7 @@
 
 <div class="box">
     <div class="heading">
-        <h3>[ latest ] comments</h3>
+        <h3>latest [ comments ]</h3>
     </div>
     <div class="content">
         {% for comment in recent_comments %}

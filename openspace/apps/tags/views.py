@@ -29,7 +29,7 @@ def selectTrail(request, tag_id):
             request.session['notification'] = 'trail'
         else:
             request.session['selected_trail'] = tag.name
-            postOut = 'following the [ ' + tag.name + ' ] trail' 
+            postOut = 'following the ' + tag.name + ' trail' 
             profileHelpers.makeUserPost(request, postOut, 'trail')
             request.session['notification'] = 'trail'
     else:

@@ -61,11 +61,12 @@ class LifeIsHard(object):
     """Drains life of an active type session profile if viewing a page that depletes energy."""
     
     def process_request(self, request):
-        profile = Profile.objects.get(id=request.session['session_id'])
-        if siteHelpers.fairPlay(profile, request):
-            profile.drain()
-            if profile.isDead:
-                request.session['session_death'] = True
+        if request.session['session_id']:
+            profile = Profile.objects.get(id=request.session['session_id'])
+            if siteHelpers.fairPlay(profile, request):
+                profile.drain()
+                if profile.isDead:
+                    request.session['session_death'] = True
 
 
 class DeathSentence(object):  
@@ -78,8 +79,6 @@ class DeathSentence(object):
             deadBody = request.session['session_id']
             
             #new session as visitor
-            #newAnon = profileHelpers.makeAnonymous()
-            #request.session['session_anon'] = newAnon.id
             request.session['session_id'] = request.session['session_anon']
             request.session['session_species'] = Species.visitor
             request.session['session_lock'] = False

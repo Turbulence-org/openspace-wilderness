@@ -8,21 +8,19 @@ def randomEncounter():
         return encounter.id
     return None
 
-def randomProfile(currentId, profile, trail):
+def randomProfile(profile, trail):
     """Selects and returns a random Profile id for navigation based on selected Trail."""
-    selectedProfile = Profile.objects.get(id=currentId)
+    selectedProfile = profile
     if profile.isPredator:
         prey = randomEncounter()
         if prey:
             return prey
     if trail:
         if Profile.objects.filter(tags=trail).count() > 1:
-            while selectedProfile.id == currentId:
-                selectedProfile = Profile.objects.exclude(visible=False).filter(tags=trail).order_by('?')[0]
+            selectedProfile = Profile.objects.exclude(visible=False).filter(tags=trail).order_by('?')[0]
     else:
         if Profile.objects.count() > 1:
-            while selectedProfile.id == currentId:
-                selectedProfile = Profile.objects.exclude(visible=False).order_by('?')[0]
+            selectedProfile = Profile.objects.exclude(visible=False).order_by('?')[0]
     return selectedProfile.id
 
 def nextProfile(currentId, profile, trail):
