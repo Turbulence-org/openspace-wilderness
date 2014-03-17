@@ -4,16 +4,6 @@ from apps.profiles.models import Profile
 from libs import siteHelpers, profileHelpers
 from libs.siteEnums import Species
 
-class YaHumanUser(object):
-    """Does an initial click-check for human users and displays an intro."""
-    
-    def process_request(self, request):
-        if 'is_human' not in request.session:
-            request.session['is_human'] = False
-            request.session['page_background'] = siteHelpers.bgSelect(666)
-            request.session['page_banner'] = siteHelpers.bannerSelect(666)
-
-
 class SessionSpeciesError(object):
     """Sets the new_session flag to true if somehow the user session ends up as an inactive species"""
     
@@ -30,13 +20,13 @@ class SessionSetup(object):
         if 'new_session' not in request.session or request.session['new_session'] is True:
             is_human = False
             if 'is_human' in request.session:
-                if 'session_anon' in request.session:
-                    entry_user = Profile.objects.get(id=request.session['session_anon'])
-                else:
-                    entry_user = profileHelpers.makeAnonymous()
+                entry_user = profileHelpers.makeAnonymous()
                 is_human = request.session['is_human']
+                request.session['session_anon'] = entry_user.id
+            if 'session_anon' in request.session:
+                entry_user = Profile.objects.get(id=request.session['session_anon'])
             else:
-                entry_user = Profile.objects.filter(species=Species.visitor).order_by('?')[0]
+                entry_user = Profile.objects.filter(species=Species.visitor).order_by('?')[0] #rando to get in the door
             request.session.flush()
             entry_nav_profile = Profile.objects.filter(species=Species.abandoned).order_by('?')[0]
             

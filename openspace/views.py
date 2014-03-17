@@ -83,6 +83,7 @@ def humanEntry(request, human_key):
     secret_key = 84990210
     if int(human_key) == secret_key:
         request.session['is_human'] = True
+        request.session['new_session'] = True
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #resetsession/
