@@ -19,6 +19,8 @@ def bigBlogBuildout(chunk):
             result = profile.fullName
         else:
             result = "filtered"
+        if blogId % 25 == 0:
+            print(blogId + " " + result)
         fileOut(os.path.join(data_path.DATA_PATH, "buildData/buildLog.txt"), str(blogId) + " - " + result + "\n", "a")
         fileOut(os.path.join(data_path.DATA_PATH, "buildData/lastBuildId.txt"), str(blogId), "w")
         
