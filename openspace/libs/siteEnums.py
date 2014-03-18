@@ -2,6 +2,8 @@ from libs.auxHelpers import returnCount
 
 class System:
     reservedTags = 11
+    energy = 50
+    mb = 68
 
 class PullField:
     blogid = 0

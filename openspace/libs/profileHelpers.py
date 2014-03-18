@@ -2,7 +2,7 @@ from django.utils import timezone
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
 from libs.pullBlog import pullBlog, pullBlogFilter
-from libs.siteEnums import Gender, Tags, Species
+from libs.siteEnums import Gender, Tags, Species, System
 from libs.auxHelpers import returnCount
 from random import randint, random
 import os, re, fnmatch
@@ -38,7 +38,7 @@ def makeProfile(speciesType):
         swapPosition(profile, Profile.objects.all().order_by('?')[0])
         profile.last_login = timezone.now()
         profile.visible = False
-        profile.energy = 80
+        profile.energy = System.energy
         profile.save()
         makeBirthPost(profile)
     return profile

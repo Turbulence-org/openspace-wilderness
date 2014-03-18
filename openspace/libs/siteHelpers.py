@@ -38,7 +38,7 @@ def excludeUrls(path):
     """Returns True if current location is in the list of excluded urls."""
     if 'profiles' not in path:
         return True
-    exclude = ['help', 'info', 'credits', 'tags', 'friends']
+    exclude = ['help', 'info', 'credits', 'tags', 'friends', 'topprofiles', 'topposts']
     for e in exclude:
         if e in path:
             return True
@@ -172,6 +172,7 @@ def parkDataProcessor():
     profileCount = Profile.objects.all().count()
     postCount = Post.objects.all().count()
     activeCount = Profile.objects.exclude(species=Species.abandoned).count()
+    protectedCount = Post.objects.filter(tags=Tags.protected).count()
     data = {}
     data = {
         'abandoned_pop': Profile.objects.filter(species=Species.abandoned).count(),
@@ -181,7 +182,9 @@ def parkDataProcessor():
         'dead_pop': Profile.objects.filter(species=Species.dead).count(),
         'percent_tagged': quickIntPercent(profileCount, Profile.objects.annotate(num_tags=Count('tags')).filter(num_tags__gt=0).count()),
         'percent_dead': quickIntPercent(profileCount, Profile.objects.filter(species=Species.dead).count()),
-        'percent_grazed': grazedProcessor()
+        'percent_grazed': grazedProcessor(),
+        'protected_posts': protectedCount,
+        'percent_protected': quickIntPercent(postCount, protectedCount) 
     }
     return data
 

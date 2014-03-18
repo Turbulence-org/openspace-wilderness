@@ -96,9 +96,8 @@ def topProfiles(request):
     unpagedProfiles = Profile.objects.exclude(visible=False).order_by('-interest')[:200]
     pagedResults = siteHelpers.paginatorMaker(unpagedProfiles, request.GET.get('page'), 50)
     context = {
-        'profileType': True,
         'heading': 'top [ 200 profiles ]',
-        'paged_results': pagedResults,
+        'paged_results': pagedResults
     }
     return render(request, 'profile-results.html', context)
 
@@ -108,6 +107,6 @@ def topPosts(request):
     pagedResults = siteHelpers.paginatorMaker(unpagedPosts, request.GET.get('page'), 25)
     context = {
         'heading': 'top [ 100 posts ]',
-        'paged_results': pagedResults,
+        'paged_results': pagedResults
     }
     return render(request, 'post-results.html', context)

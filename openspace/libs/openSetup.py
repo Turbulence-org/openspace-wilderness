@@ -79,7 +79,7 @@ def setupOpen(pop):
             location=p['location'],
             last_login=timezone.now(),
             species=Species.forager,
-            energy=80,
+            energy=System.energy,
             visible=False
         )
         newProfile.save()

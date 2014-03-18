@@ -1,7 +1,7 @@
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
 from libs import navHelpers, siteHelpers
-from libs.siteEnums import Species, Tags
+from libs.siteEnums import Species, Tags, System
 
 def siteProcessor(request):
     background = 'media/backgrounds/bg-' + str(request.session['page_background']) + '.jpg'
@@ -12,7 +12,8 @@ def siteProcessor(request):
         'is_human': request.session['is_human'],
         'background': background,
         'banner_src': banner_src,
-        'path': request.get_full_path()
+        'path': request.get_full_path(),
+        'mb_size': System.mb
     }
     return site_context
 
