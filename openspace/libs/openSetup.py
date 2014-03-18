@@ -1,7 +1,7 @@
 from django.utils import timezone
 from apps.profiles.models import Profile
 from apps.tags.models import Tag
-from libs.profileHelpers import makeProfile, makeBirthPost, makeFriends, assignImages, makeTaggedPost
+from libs.profileHelpers import makeProfile, makeBirthPost, makeFriends, assignImages, makeTaggedPost, makeAnonymous
 from libs.siteEnums import Species, Gender, Tags
 import data_path
 
@@ -58,7 +58,6 @@ def setupOpen(pop):
         location='Indianapolis, Indiana',
         last_login=timezone.now(),
         species=Species.system,
-        profile_url='ranger@openspacewilderness.com',
         img_number=1,
         energy=1983,
         visible=True
@@ -66,6 +65,9 @@ def setupOpen(pop):
     ranger.save()
     rangerPost = "Thank you for visiting the openspace wilderness. I am here to assist you as well as post occasional updates and additional info about the park. Have fun exploring, and be careful out there in the wilds."
     makeTaggedPost(ranger, rangerPost, 'protected')
+    
+    #SEED Visitor
+    makeAnonymous()
     
     #SEED PREY PROFILES
     for p in initialPreyProfiles():
