@@ -3,6 +3,16 @@ from libs.auxHelpers import returnCount
 class System:
     reservedTags = 11
 
+class PullField:
+    blogid = 0
+    blogname = 1
+    blogurl = 2
+    totalposts = 3
+    lastupdate = 4
+    posttitle = 5
+    postpublished = 6
+    postcontent = 7
+
 class Gender:
     female = 0
     male = 1

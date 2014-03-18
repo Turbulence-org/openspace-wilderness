@@ -1,8 +1,7 @@
-from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils import timezone
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
-from libs.pullBlog import pullBlog
+from libs.pullBlog import pullBlog, pullBlogFilter
 from libs.siteEnums import Gender, Tags, Species
 from libs.auxHelpers import returnCount
 from random import randint, random
@@ -43,6 +42,32 @@ def makeProfile(speciesType):
         profile.save()
         makeBirthPost(profile)
     return profile
+
+def makeBuildAbandoned(blogNo):
+    blogId, url, lastUpdate, posts = pullBlogFilter(blogNo)
+    if blogId:
+        fn, ln, gn = nameGenerate()
+        profile = Profile(
+            fname = fn,
+            lname = ln,
+            gender = gn,
+            age = ageGenerate(),
+            location = locationGenerate(),
+            species = Species.abandoned,
+            blog_id = blogId,
+            blog_url = url,
+            last_login = lastUpdate
+        )
+        assignImages(profile)
+        for post in posts:
+            newPost = Post(
+                post_profile=profile,
+                date_published=post[1],
+                post_content=re.sub('<[^<]+?>', '', post[2])
+            )
+            newPost.save()
+        return profile
+    return None
 
 def makeAnonymous():
     """Creates and returns a new Profile object of species type visitor.
@@ -134,13 +159,14 @@ def eatPrey(predator, prey):
     The prey's energy is added to the predators. The prey will die
     and Posts are created for both predator and prey.
     """
-    predator.energy += prey.energy
+    newEnergy = prey.energy
+    predator.energy += newEnergy
     predator.meals += 1
     predator.save()
     prey.die()
     postOut = 'eaten by ' + predator.fullName
     makeTaggedPost(prey, postOut, 'predation')
-    postOut = 'ate ' + prey.fullName
+    postOut = 'gained ' + str(newEnergy) + 'from eating ' + prey.fullName
     makeTaggedPost(predator, postOut, 'predation')
     return True
 

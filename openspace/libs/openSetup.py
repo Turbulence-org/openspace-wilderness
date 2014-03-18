@@ -35,13 +35,14 @@ def initialTags():
         'video games', 'anger', 'romance'
         ]
 
-def setupOpen():
+def setupOpen(pop):
 
     #SETUP ABANDONED PROFILES
-    populate(50)
-    profiles = Profile.objects.all()
-    for p in profiles:
-        makeFriends(p)
+    if pop > 1:
+        populate(pop)
+    #profiles = Profile.objects.all()
+    #for p in profiles:
+    #    makeFriends(p)
     
     #SETUP TAGS
     for t in initialTags():
@@ -57,6 +58,7 @@ def setupOpen():
         location='Indianapolis, Indiana',
         last_login=timezone.now(),
         species=Species.system,
+        profile_url='ranger@openspacewilderness.com',
         img_number=1,
         energy=1983,
         visible=True
