@@ -154,7 +154,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # openspace context processors
     'libs.contextProcessors.siteProcessor',
     'libs.contextProcessors.sessionProcessor',
-    #'libs.contextProcessors.navigationProcessor',
     'libs.contextProcessors.messageProcessor',
 )
 
@@ -186,6 +185,7 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     # Useful template tags:
     'django.contrib.humanize',
     # Admin panel and documentation:

@@ -10,10 +10,6 @@ import urllib
 def openspace404(request):
     return render(request, 'help.html')
 
-#500
-def openspace500(request):
-    return render(request, 'help.html')
-
 #/
 def index(request):
     context = {
