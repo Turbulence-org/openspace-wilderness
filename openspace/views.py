@@ -82,6 +82,11 @@ def humanEntry(request, human_key):
         request.session['new_session'] = True
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+#nonewsession
+def noNewSession(request):
+    request.session['is_human'] = True
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 #resetsession/
 def resetSession(request):
     request.session['new_session'] = True
