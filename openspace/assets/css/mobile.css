@@ -1,5 +1,37 @@
 /* --------------------------------------------------------------------------------->
-[openspace] wilderness [MOBILE stylesheet]
+[openspace] wilderness [MOBILEstylesheet]
 http://www.openspacewilderness.com
 AUTHOR: Andrew T. Lyman [nerdyLawman] [andrewtlyman@gmail.com] [2014]
 <--------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 480px) {
+    .col {float:none; display:block;}
+    #pageWrap {max-width:480px; margin:0 auto;; padding:0;}
+    #infoCol, #leftCol {width:inherit;}
+    #infoCol, #mainCol, #leftCol, #rightCol {max-width:412px !important; margin:0 auto; padding:2px; float:none; display:block;}
+    #banner, #osIcon {display:none;}
+    #navBar, #mainNav, #subNav {float:none; display:block; max-width:412px; margin:0; padding:0;}
+    #navBar {margin:4px auto;}
+    .nav {text-align:center; margin:0; padding:0;}
+    .nav li {padding:0; margin-right:2px;}
+    .box, .bigBlock, .subBlock, .smallBlock, .heading {max-width:412px; float:none; display:block;}
+    .contentBlock, .content {max-width:380px; margin:0 auto; float:none; display:block;}
+    .innerListing, .wideListing {max-width:235px;}
+    .smallBlock, .lastR {margin:0;}
+}
+
+@media screen and (max-width:320px) {
+    .col {float:none; display:block;}
+    #pageWrap {max-width:320px; margin:0 auto; padding:0;}
+    #infoCol, #leftCol {width:inherit;}
+    #infoCol, #mainCol, #leftCol, #rightCol {max-width:310px !important; margin:0 auto; padding:2px; float:none; display:block;}
+    #banner, #osIcon {display:none;}
+    #navBar, #mainNav, #subNav {float:none; display:block; max-width:310px; margin:0; padding:0;}
+    #navBar {margin:4px auto;}
+    .nav {text-align:center; margin:0; padding:0;}
+    .nav li {padding:0; margin-right:2px;}
+    .box, .bigBlock, .subBlock, .smallBlock, .heading {max-width:310px; float:none; display:block;}
+    .contentBlock, .content {max-width:300px; margin:0 auto; float:none; display:block;}
+    .innerListing, .wideListing {max-width:150px;}
+    .smallBlock, .lastR {margin:0;}
+}

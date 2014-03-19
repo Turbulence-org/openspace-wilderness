@@ -1,7 +1,10 @@
 [OPENSPACE WILDERNESS] v1.0
 Andrew T. Lyman 2014 - andrewtlyman@gmail.com
 
-[made with a comission from turbulence.org]
+
+----------------------------[credit]
+
+The [openspace] wilderness is a 2013 commission of New Radio and Performing Arts, Inc., for its Turbulence.org website. It was made possible with funding from the National Endowment for the Arts. [back to Turbulence.org]
 
 
 ----------------------------------------------------------[welcome]
@@ -14,19 +17,19 @@ The wilderness is a finite and consumable resource. You are among the first huma
 
 ------------[key]
 
-[@] - select trail
-[-] - deselect trail
-[f] - add profile as friend
-[+] - add interest
-[tag] - add tag(s)
-[comment] - add comment
+[@] - select trail \n
+[-] - deselect trail \n
+[f] - add profile as friend \n
+[+] - add interest \n
+[tag] - add tag(s) \n
+[comment] - add comment \n
 
 -----[definitions]
 
-[trail] - an explorable area of the park linked by a [tag]
-[predator] - consumes active profiles for energy
-[forager] - grazes the content of posts for energy
-[energy] - the consumable resource of active profiles
+[trail] - an explorable area of the park linked by a [tag] \n
+[predator] - consumes active profiles for energy \n
+[forager] - grazes the content of posts for energy \n
+[energy] - the consumable resource of active profiles \n
 
 
 --------------------------------[instructions]
