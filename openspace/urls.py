@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^changebg/$', views.changeBg, name='changeBg'),
     url(r'^humanentry/(?P<human_key>\d+)$', views.humanEntry, name='humanEntry'),
     url(r'^resetsession/$', views.resetSession, name='resetSession'),
-    url(r'^nonewsession/', views.noNewSession, name='noNewSession)
+    url(r'^nonewsession/', views.noNewSession, name='noNewSession')
 )
 
 
