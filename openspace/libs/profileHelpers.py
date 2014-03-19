@@ -199,7 +199,7 @@ def grazePost(forager, post):
         modifier = 0
         foragerCount = Profile.objects.filter(species=Species.forager).count()
         if foragersCount < len(bite):
-            modifier = float(foragerCount) / len(bite)) * 100
+            modifier = (float(foragerCount) / len(bite)) * 100
         nutrients = len(bite) - bite.count(chompChar) - (modifier + foragerCount)
         forager.energy +=  
         forager.meals += 1
