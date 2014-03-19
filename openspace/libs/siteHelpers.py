@@ -111,20 +111,24 @@ def addTags(obj, tags):
     Creates a new Tag object if tag is new to the system. Will not create duplicates but will
     add to interest rating of pre-existing Tag objects.
     """
+    passed = ""
     for tag in tags:
-        if tag.isalpha():
-            if Tag.objects.filter(name=tag).count():
-                t = Tag.objects.filter(name=tag.lower()).order_by('?')[0]
+        if len(tag) < 15:
+            cleanTag = ' '.join(tag.split())
+            if Tag.objects.filter(name=cleanTag).count():
+                t = Tag.objects.filter(name=cleanTag.lower()).order_by('?')[0]
                 t.interest += 1
                 t.save()
             else:
-                t = Tag(name=tag.lower(), interest=1)
+                t = Tag(name=cleanTag.lower(), interest=1)
                 t.save()
             if isinstance(obj, Post):
                 obj.post_profile.tags.add(t)  
                 obj.post_profile.save()  
             obj.tags.add(t)
+            passed += cleanTag + ', '
     obj.save()
+    return passed[:-2]
 
 def bannerSelect(current):
     """Returns a randomly selected banner image from collection of banners. Used in bruce_banner block."""

@@ -158,10 +158,11 @@ def addProfileTags(request, profile_id):
         form = ProfileTagForm(request.POST)
         if form.is_valid:
             new_tags = form.data['pro_new_tags']
-            siteHelpers.addTags(profile, new_tags.split(', '))
-            postOut = 'added tags: ' + new_tags
-            profileHelpers.makeUserPost(request, postOut, 'tag')
-            request.session['notification'] = 'tagprofile'
+            addedTags =  siteHelpers.addTags(profile, new_tags.split(','))
+            if addedTags:
+                postOut = 'added tags: ' + addedTags
+                profileHelpers.makeUserPost(request, postOut, 'tag')
+                request.session['notification'] = 'tagprofile'
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return redirect('profiles:single', profile_id)
 
@@ -174,10 +175,11 @@ def addPostTags(request, profile_id, post_id):
         form = PostTagForm(request.POST)
         if form.is_valid:
             new_tags = form.data['post_new_tags']
-            siteHelpers.addTags(post, new_tags.split(', '))
-            postOut = 'added tags: ' + new_tags
-            profileHelpers.makeUserPost(request, postOut, 'tag')
-            request.session['notification'] = 'tagpost'
+            addedTags = siteHelpers.addTags(post, new_tags.split(', '))
+            if addedTags:
+                postOut = 'added tags: ' + addedTags
+                profileHelpers.makeUserPost(request, postOut, 'tag')
+                request.session['notification'] = 'tagpost'
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     #TODO error massage
     return redirect('profiles:post', profile_id, post_id)
