@@ -4,7 +4,7 @@
 <div id="help" class="box emblem head">
     <div class="content">
         <div class="contentBlock bigBlock justify">
-            <h3>[ openspace ] help</h3>
+            <h3>[ openspace ] tutorial</h3>
             <p>Welcome, Visitor, to the <strong>[openspace] wilderness</strong>. This site is a virtual nature preserve for a small section of the abandoned internet. This is a quick primer to navigating the wilderness so that you may be well prepared to explore the site happily and safely on your own.</p>
             <p>To start, no one is required to create an account in the <strong>[ openspace ] wilderness</strong>. Upon entry each guest is admitted as an <strong>[Anonymous Visitor]</strong>. As a visitor most of the functionality of the site is already available to you. Your will notice your <strong>[session display]</strong> on the top left of the page. You may view your session's <strong>[profile]</strong> at any time by simply clicking your icon. Underneath your profile is your <strong>[session activity]</strong>. This is simply a small feed of your most recent posts and actions. On the top right are your <strong>[navigation options]</strong>. You may simply move forward - <strong>[next]</strong>, back - <strong>[previous]</strong>, or jump to a <strong>[random]</strong> profile. Profiles comprise the explorable space of the site. Each profile has a host of attributes and there are a number of ways that you may interact with each profiles such as: liking them - <strong>[+]</strong>, making friends - <strong>[f]</strong>, or <strong>[commenting]</strong>. In addition to these you may also <strong>[tag]</strong> a profile or post. Tagging objects in the wilderness creates <strong><a href="{% url 'tags:tags' %}">[trails]</a></strong> which allow you and other visitors to navigate along paths of like profiles and posts. Note that if you tag a post, its profile will also inherit the tag. Hopping on - <strong>[@]</strong> and off - <strong>[&ndash;]</strong> trails is simple, and the trails page displays a list of all the available trails and the profiles along each one. You may also use the <strong>[search]</strong> button at the top to discover posts containing words or phrases of your choosing.</p>
             <p>Another aspect to the <strong>[openspace] wilderness</strong> is its dynamic population. You will notice under your session icon a tab that says <strong>[select species]</strong>, clicking this will drop-down the two available active species options: <strong>[predator]</strong> and <strong>[forager]</strong>. Both of these active species can engage in any of the activities a visitor can, however they each posses special actions that may be used while exploring the park. If you choose to create one of the active profiles you will be taken to the page of your new session profile. You session display will look similar, however you will now notice a large number that says <strong>[energy]</strong> underneath it - this is the life force of the active profiles. As you navigate the park now, your energy will be depleted. Each active species must consume a foodsource as they move about or they will eventually <strong>[die of starvation]</strong>. <strong>[Predators]</strong> consume other active profiles for sustenance and <strong>[foragers]</strong> graze the content of posts. As you navigate as a predator, you may eventually happen upon some <strong>[prey]</strong>. You will notice a red <strong>[eat]</strong> button will pop up on a consumable profile. Active profiles are generally invisible to regular visitors, but eaten prey will now be left to rot out in the open and other guests may happen upon it as they explore.</p>
@@ -14,7 +14,7 @@
         </div>
         
         <div class="contentBlock smallBlock">
-        <h3>[ park key ]</h3>
+        <h3>[ key ]</h3>
         <p><span class="mono dark">[+]</span> - add interest<br/>
         <span class="mono dark">[@]</span> - select trail<br/>
         <span class="mono dark">[-]</span> - deselect trail<br/>
@@ -33,7 +33,7 @@
         <h3>speak with the <a href="{% url 'profiles:single' ranger_id %}">[ Ranger ]</a></h3>
         <div id="picWrapper" class="center"><div id="profilePic"><a href="{% url 'profiles:single' ranger_id %}"><img class="round" src="{{ STATIC_URL }}{{ ranger_icon }}" alt="ranger icon" /></a></div></div>
         <div class="clear"><br/></div>
-        <h5><a href="#">ranger@openspacewilderness.com</a></h5>
+        <h5><a href="mailto:&#114;&#097;&#110;&#103;&#101;&#114;&#064;&#111;&#112;&#101;&#110;&#115;&#112;&#097;&#099;&#101;&#119;&#105;&#108;&#100;&#101;&#114;&#110;&#101;&#115;&#115;&#046;&#099;&#111;&#109;">ranger@openspacewilderness.com</a></h5>
         <br/>
         <p><em>"We are happy to answer any questions you may have. Thank you for visiting the openspace wilderness."</em></p>
         </div>

@@ -16,7 +16,7 @@ def index(request):
         'profiles': Profile.objects.filter(species=Species.abandoned).order_by('-interest')[:10],
         'posts': Post.objects.order_by('-interest')[:10],
         'tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('-interest')[:20],
-        'recent_comments': Comment.objects.order_by('-date_published')[:15],
+        'recent_comments': Comment.objects.order_by('-date_published')[:5],
         'profile_count': Profile.objects.count(),
         'post_count': Post.objects.count(),
     }
