@@ -201,7 +201,7 @@ def grazePost(forager, post):
         if foragerCount < len(bite):
             modifier = (float(foragerCount) / len(bite)) * 100
         nutrients = len(bite) - bite.count(chompChar) - (modifier + foragerCount)
-        forager.energy +=  
+        forager.energy += nutrients 
         forager.meals += 1
         forager.save()
         post.post_content = (post.post_content[0:start] +
