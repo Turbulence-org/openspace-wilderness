@@ -58,6 +58,7 @@ def makeBuildAbandoned(blogNo):
             blog_url = url,
             last_login = lastUpdate
         )
+        profile.position = profile.id
         assignImages(profile)
         for post in posts:
             newPost = Post(
@@ -195,7 +196,12 @@ def grazePost(forager, post):
     bite = bite.replace(chompChar, '')
     if len(bite) > 0:
         grazePost = makeTaggedPost(forager, bite, 'grazing')
-        forager.energy += len(bite) - bite.count(chompChar) - Profile.objects.filter(species=4).count()
+        modifier = 0
+        foragerCount = Profile.objects.filter(species=Species.forager).count()
+        if foragersCount < len(bite):
+            modifier = (float(foragerCount) / len(bite)) * 100
+        nutrients = len(bite) - bite.count(chompChar) - modifier
+        forager.energy +=  
         forager.meals += 1
         forager.save()
         post.post_content = (post.post_content[0:start] +
