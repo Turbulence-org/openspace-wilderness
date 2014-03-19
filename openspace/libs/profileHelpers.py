@@ -182,7 +182,7 @@ def grazePost(forager, post):
     grazed section on the target post is replaced with chompChars. Energy is equivalent to bite size. 
     """
     chompChar = ' / '
-    maxBite = 333
+    maxBite = 246
     start = randint(1, len(post.post_content) - 1)
     if len(post.post_content) < 2:
         return False
@@ -199,8 +199,8 @@ def grazePost(forager, post):
         modifier = 0
         foragerCount = Profile.objects.filter(species=Species.forager).count()
         if foragersCount < len(bite):
-            modifier = (float(foragerCount) / len(bite)) * 100
-        nutrients = len(bite) - bite.count(chompChar) - modifier
+            modifier = float(foragerCount) / len(bite)) * 100
+        nutrients = len(bite) - bite.count(chompChar) - (modifier + foragerCount)
         forager.energy +=  
         forager.meals += 1
         forager.save()
