@@ -9,6 +9,7 @@ from sitemap import *
 admin.autodiscover()
 
 handler404 = 'views.openspace404'
+handler500 = 'views.openspace500'
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),

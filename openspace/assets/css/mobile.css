@@ -4,7 +4,7 @@ http://www.openspacewilderness.com
 AUTHOR: Andrew T. Lyman [nerdyLawman] [andrewtlyman@gmail.com] [2014]
 <--------------------------------------------------------------------------------- */
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) or (max-width: 560px) {
     .col {float:none; display:block;}
     #pageWrap {max-width:480px; margin:0 auto;; padding:0;}
     #infoCol, #leftCol {width:inherit;}

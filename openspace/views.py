@@ -10,6 +10,10 @@ import urllib
 def openspace404(request):
     return render(request, 'help.html')
 
+#500
+def openspace500(request):
+    return render(request, 'https://s3.amazonaws.com/openspacemedia/error/os500.html')
+
 #/
 def index(request):
     context = {
