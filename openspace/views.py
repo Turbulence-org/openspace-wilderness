@@ -12,7 +12,7 @@ def openspace404(request):
 
 #500
 def openspace500(request):
-    return render(request, 'https://s3.amazonaws.com/openspacemedia/error/os500.html')
+    return HttpResponseRedirect('https://s3.amazonaws.com/openspacemedia/error/os500.html')
 
 #/
 def index(request):
