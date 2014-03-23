@@ -4,6 +4,13 @@ class System:
     reservedTags = 11
     energy = 50
     mb = 68
+    full = 300
+    fitUrl = 50
+    minBite = 11
+    maxBite = 286
+    minFriends = 13
+    maxFriends = 43
+    maxTag = 15
 
 class PullField:
     blogid = 0

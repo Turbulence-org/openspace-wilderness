@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from apps.profiles.models import Profile, Post
 from apps.tags.models import Tag
-from libs.siteEnums import Species, Tags
+from libs.siteEnums import Species, Tags, System
 from libs.auxHelpers import returnCount
 from random import randint
 from sys import path
@@ -113,7 +113,7 @@ def addTags(obj, tags):
     """
     passed = ""
     for tag in tags:
-        if len(tag) < 15:
+        if len(tag) < System.maxTag:
             cleanTag = ' '.join(tag.split())
             if Tag.objects.filter(name=cleanTag).count():
                 t = Tag.objects.filter(name=cleanTag.lower()).order_by('?')[0]
@@ -159,13 +159,14 @@ def getTheMessage(request, key):
         'forager': 'you are now a forager',
         'predation': 'you ate [' + navName + '] to sustain life',
         'grazing': 'you grazed to sustain life',
+        'full': 'you are full and couldn\'t possibly take another bite',
         'friends': 'you made friends with [' + navName + ']',
         'comment': 'you commented on a post',
         'likeprofile': 'you like [' + navName + ']',
         'likepost': 'you like a post by [' + navName + ']',
         'tagprofile': 'you tagged [' + navName + ']',
         'tagpost': 'you tagged a post by [' + navName + ']',
-        'trail': 'following [' + request.session['selected_trail'] + '] trail'
+        'trail': 'you are now following the [' + request.session['selected_trail'] + '] trail'
     }
     if key in (siteMessages):
         return siteMessages[key]

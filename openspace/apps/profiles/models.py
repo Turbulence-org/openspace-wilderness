@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from apps.tags.models import Tag
-from libs.siteEnums import Gender, Species
+from libs.siteEnums import Gender, Species, System
 from libs.auxHelpers import returnCount
 from random import randint
 import os, fnmatch
@@ -103,13 +103,18 @@ class Profile(models.Model):
             return True
     
     @property
+    def isFull(self):
+        if self.energy >= System.full:
+            return True
+    
+    @property
     def isDead(self):
         if self.species == Species.dead:
             return True
     
     @cached_property
     def fitUrl(self):
-        if len(self.blog_url) > 50:
+        if len(self.blog_url) > System.fitUrl:
             return self.blog_url[7:]
         return self.blog_url
     

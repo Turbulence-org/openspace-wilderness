@@ -1,11 +1,15 @@
 from apps.profiles.models import Profile
 from libs.siteEnums import Species
+from random import randint
 
 def randomEncounter():
     """Selects a random Profile object and if Profile.isActive returns it as random encounter."""
-    encounter = Profile.objects.all().order_by('?')[0]
-    if encounter.isActive:
-        return encounter.id
+    foragerCount = Profile.objects.filter(species=Species.forager).count()
+    if foragerCount:
+        const = 100
+        encounter = randint(0, const+foragerCount)
+        if encounter <= foragerCount:
+            return Profile.objects.filter(species=Species.forager).order_by('?')[0]
     return None
 
 def randomProfile(profile, trail):

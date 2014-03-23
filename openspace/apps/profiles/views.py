@@ -211,6 +211,8 @@ def grazeProfile(request, profile_id):
     if targetPost:
         if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost[0]):
             request.session['notification'] = 'grazing'
+        else:
+            request.session['notification'] = 'full'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #/profiles/5/post/5/graze

@@ -94,8 +94,8 @@ def makeAnonymous():
 
 def makeFriends(profile):
     """Assigns a number of friends to supplied Profile object. Returns nothing."""
-    minFriends = 13
-    maxFriends = 43
+    minFriends = System.minFriends
+    maxFriends = System.maxFriends
     manyFriends = randint(minFriends, maxFriends)
     if profile.friends.count() < manyFriends:
         newfriends = Profile.objects.exclude(id=profile.id).filter(species=Species.abandoned).order_by('?')[:manyFriends]
@@ -163,6 +163,10 @@ def eatPrey(predator, prey):
     The prey's energy is added to the predators. The prey will die
     and Posts are created for both predator and prey.
     """
+    if predator.isFull:
+        predator.energy += 2
+        predator.save()
+        return False
     newEnergy = prey.energy
     predator.energy += newEnergy
     predator.meals += 1
@@ -181,12 +185,15 @@ def grazePost(forager, post):
     from the supplied Post object. This bite is added to the forager's profile in the form of a grazePost and the
     grazed section on the target post is replaced with chompChars. Energy is equivalent to bite size. 
     """
+    if forager.isFull:
+        forager.energy += 2
+        forager.save()
+        return False
     chompChar = ' / '
-    maxBite = 246
     start = randint(1, len(post.post_content) - 1)
     if len(post.post_content) < 2:
         return False
-    bitesize = randint(10, maxBite) 
+    bitesize = randint(System.minBite, System.maxBite) 
     end = randint(start, start+bitesize)
     if end > len(post.post_content):
         end = len(post.post_content)
@@ -199,8 +206,8 @@ def grazePost(forager, post):
         modifier = 0
         foragerCount = Profile.objects.filter(species=Species.forager).count()
         if foragerCount < len(bite):
-            modifier = (float(foragerCount) / len(bite)) * 100
-        nutrients = len(bite) - bite.count(chompChar) - (modifier + foragerCount)
+            modifier = (float(foragerCount) / len(bite)) * 100  #percentage
+        nutrients = len(bite) - modifier
         forager.energy += nutrients 
         forager.meals += 1
         forager.save()
