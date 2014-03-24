@@ -12,6 +12,7 @@ def tags(request):
 
 #/tags/<tag_id>/
 def tag(request, tag_id):
+    """Display paginate Profiles assigned to current Tag."""
     tag = get_object_or_404(Tag.objects.prefetch_related('profile_set'), pk=tag_id)
     unpagedProfiles = Profile.objects.filter(tags=tag).order_by('-interest')
     pagedResults = siteHelpers.paginatorMaker(unpagedProfiles, request.GET.get('page'), 25)
@@ -25,6 +26,7 @@ def tag(request, tag_id):
     
 #/tags/<tag_id>/selecttrail/
 def selectTrail(request, tag_id):
+    """Assigns a Tag to user's session navigation."""
     tag = get_object_or_404(Tag, pk=tag_id)
     if tag.interest > 0:
         if request.session['selected_trail'] == tag.name:
@@ -35,10 +37,4 @@ def selectTrail(request, tag_id):
             request.session['notification'] = 'trail'
     else:
         request.session['notification'] = 'nope'
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-#/tags/deselecttrail/
-def deselectTrail(request):
-    request.session['selected_trail'] = 'no'
-    request.session['notification'] = 'trail'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

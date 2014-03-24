@@ -75,9 +75,10 @@ class DeathSentence(object):
             request.session['notification'] = 'starvation'
             deadBody = request.session['session_id']
             
-            #new session as visitor
+            # NEW SESSION AS VISITOR
             request.session['session_id'] = request.session['session_anon']
             request.session['session_species'] = Species.visitor
+            request.session['is_human'] = True
             request.session['session_lock'] = False
             
             return redirect('profiles:profileDeath',  deadBody)

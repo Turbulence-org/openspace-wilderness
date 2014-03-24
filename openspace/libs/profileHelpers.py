@@ -44,6 +44,7 @@ def makeProfile(speciesType):
     return profile
 
 def makeBuildAbandoned(blogNo):
+    """Function specifically for fully populating the database from all recovered blogs."""
     blogId, url, lastUpdate, posts = pullBlogFilter(blogNo)
     if blogId:
         fn, ln, gn = nameGenerate()
@@ -109,7 +110,7 @@ def makeFriends(profile):
 def makePosts(profile):
     """Creates Post objects from posts of a recovered blog from source data.
     
-    Returns a blog id, url, and last updated. Requires Profile to assign created Posts to.
+    Returns a blog id, url, and last updated. Requires Profile to assign created Posts.
     """
     blogId, url, lastUpdate, posts = pullBlog(None)
     for post in posts:
@@ -179,11 +180,14 @@ def eatPrey(predator, prey):
     return True
 
 def grazePost(forager, post):
-    """Forager type Profile consumes a portion of the content from a selected Post object for energy. Returns True if success.
+    """Forager type Profile consumes a portion of the content
+    from a selected Post object for energy. Returns True if success.
     
-    A bite size is calculated based on modifiers referencing current forager type population and a bite is taken
-    from the supplied Post object. This bite is added to the forager's profile in the form of a grazePost and the
-    grazed section on the target post is replaced with chompChars. Energy is equivalent to bite size. 
+    A bite size is calculated based on modifiers referencing current forager
+    type population and a bite is taken from the supplied Post object.
+    This bite is added to the forager's profile in the form of a grazePost and the
+    grazed section on the target post is replaced with chompChars.
+    Energy is equivalent to bite size. 
     """
     if forager.isFull:
         forager.energy += 2

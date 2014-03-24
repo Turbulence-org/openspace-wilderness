@@ -80,7 +80,8 @@ def changeBg(request):
 
 #humanentry/3432452
 def humanEntry(request, human_key):
-    secret_key = 84990210
+    """Verifies that the user is human and not a bot creating multiple thousand new profiles."""
+    secret_key = System.humanKey
     if int(human_key) == secret_key:
         request.session['is_human'] = True
         request.session['new_session'] = True
@@ -88,11 +89,13 @@ def humanEntry(request, human_key):
 
 #nonewsession
 def noNewSession(request):
+    """Bypass creating a new profile but register as human."""
     request.session['is_human'] = True
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 #resetsession/
 def resetSession(request):
+    """Clears the whole user session and starts fresh."""
     request.session['new_session'] = True
     return redirect('index')
     

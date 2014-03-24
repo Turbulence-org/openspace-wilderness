@@ -1,9 +1,9 @@
 from settings.common import DJANGO_ROOT
-import os
-import fnmatch
+import os, fnmatch
 
 def getUpdateCounts():
-    """Creates text files out of number of .jpgs in assets directories. CAN ONLY BE RUN LOCALLY"""
+    """Creates text files out of number of .jpgs in assets directories.
+    CAN ONLY BE RUN LOCALLY!"""
     assetspath = os.path.join(DJANGO_ROOT, 'assets/media')
     outpath = os.path.join(DJANGO_ROOT, 'libs/data/assetcounts')
     for folder in os.listdir(assetspath):

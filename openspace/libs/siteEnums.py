@@ -1,6 +1,7 @@
 from libs.auxHelpers import returnCount
 
 class System:
+    humanKey = 84990210
     reservedTags = 11
     energy = 50
     mb = 68
@@ -10,7 +11,9 @@ class System:
     maxBite = 286
     minFriends = 13
     maxFriends = 43
+    bestFriends = 12
     maxTag = 15
+    postsPage = 12
 
 class PullField:
     blogid = 0

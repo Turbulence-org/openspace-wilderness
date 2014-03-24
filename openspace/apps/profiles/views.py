@@ -7,7 +7,6 @@ from apps.tags.models import Tag
 from apps.profiles.forms import CommentForm, ProfileTagForm, PostTagForm
 from libs.siteEnums import System, Tags
 from libs import siteHelpers, profileHelpers
-from random import randint
 import re
 
 #/profiles/
@@ -16,11 +15,13 @@ def index(request):
 
 #/profiles/<profile_id>/    
 def single(request, profile_id):
-    profile = get_object_or_404(Profile.objects.prefetch_related('post_set', 'tags'), pk=profile_id)
+    """Displays a single Profile and show paginated Posts"""
+    profile = get_object_or_404(Profile.objects.prefetch_related('post_set', 'tags'),
+        pk=profile_id)
     request.session['nav_position'] = profile.position
     request.session['nav_id'] = profile_id
     allPosts = profile.post_set.all().prefetch_related('comment_set', 'tags')
-    posts = Paginator(allPosts, 12)
+    posts = Paginator(allPosts, System.postsPage)
     page = request.GET.get('page')
     try:
         pagedPosts = posts.page(page)
@@ -41,21 +42,18 @@ def single(request, profile_id):
 
 #/profiles/<profile_id>/friends/
 def friends(request, profile_id):
+    """Displays all friends of a Profile."""
     profile = get_object_or_404(Profile.objects.select_related('friends'), pk=profile_id)
     context = {
         'profile': profile,
         'profile_tag_form': ProfileTagForm(auto_id=False),
-        'auto_tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('-interest','name')[:30],
+        'auto_tags': Tag.objects.filter(id__gt=System.reservedTags).order_by('-interest','name')[:30]
     }
     return render(request, 'profiles/friends.html', context)
 
 #/profiles/<profile_id>/makefriend/
 def makeFriend(request, profile_id):
-    """Adds current profile in navigation to users friends collection.
-    
-    Follows: get objects, check, assign, post about it.
-    """
-    
+    """Adds current profile to user's friends set and returns to referrer. Makes a user post."""
     friend = get_object_or_404(Profile, pk=profile_id)
     user = Profile.objects.get(id=request.session['session_id'])
     if friend not in user.friends.all():
@@ -70,6 +68,7 @@ def makeFriend(request, profile_id):
 
 #/profiles/<profile_id>/tags/
 def profileTags(request, profile_id):
+    """Displays all Tags attached to a Profile."""
     profile = get_object_or_404(Profile.objects.prefetch_related('tags'), pk=profile_id)
     context = {
         'profile': profile,
@@ -80,20 +79,23 @@ def profileTags(request, profile_id):
 
 #/profiles/<profile_id>/death/
 def profileDeath(request, profile_id):
+    """Takes a profile id makes a death post and delivers you to profile page.
+    NOTE: Profile should already be dead by the time it gets here."""
     profile = get_object_or_404(Profile, pk=profile_id)
     if profile.isDead:
         profileHelpers.makeDeathPost(profile)
-        #profile.die()
         request.session['notification'] = 'starvation'
         request.session['nav_position'] = profile.position
     return redirect('profiles:single', profile.id)
     
 #/profiles/<profile_id>/post/<post_id>/
 def singlePost(request, profile_id, post_id):
+    """Displays a single Post from a Profile."""
     profile = get_object_or_404(Profile.objects.prefetch_related('post_set'), pk=profile_id)
     post = get_object_or_404(Post.objects.prefetch_related('comment_set', 'tags'), pk=post_id)
     request.session['nav_position'] = profile.position
     request.session['nav_id'] = profile_id
+    request.session['is_human'] = True
     context = {
         'profile': profile,
         'post': post,
@@ -107,6 +109,7 @@ def singlePost(request, profile_id, post_id):
 
 #/profiles/<profile_id>/post/<post_id>/addcomment/
 def addComment(request, profile_id, post_id):
+    """Adds a comment a Post and returns to referrer. Makes a user post."""
     profile = get_object_or_404(Profile, pk=profile_id)
     post = get_object_or_404(Post, pk=post_id)
     context = {'profile': profile, 'post': post}
@@ -123,11 +126,11 @@ def addComment(request, profile_id, post_id):
             profileHelpers.makeUserPost(request, postOut, 'comment')
             request.session['notification'] = 'comment'
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    #TODO error massage
     return redirect('profiles:singlePost', profile_id, post_id)
 
 #/profiles/5/profileinterest/
 def profileInterest(request, profile_id):
+    """Adds interest to a Profile. Makes a user post."""
     profile = get_object_or_404(Profile, pk=profile_id)
     interestSet = request.session['profile_interest_collection'].split(',')
     if profile_id not in interestSet and profile_id != request.session['session_id']:
@@ -140,6 +143,7 @@ def profileInterest(request, profile_id):
 
 #/profiles/post/5/postinterest/
 def postInterest(request, post_id):
+    """Adds interest to a Post. Makes a user post."""
     post = get_object_or_404(Post, pk=post_id)
     interestSet = request.session['post_interest_collection'].split(',')
     if post_id not in interestSet:
@@ -152,6 +156,7 @@ def postInterest(request, post_id):
     
 #/profiles/5/addtags
 def addProfileTags(request, profile_id):
+    """Adds Tags to a Profile. Makes a user post."""
     profile = get_object_or_404(Profile, pk=profile_id)
     context = {'profile': profile}
     if request.POST:
@@ -168,6 +173,7 @@ def addProfileTags(request, profile_id):
 
 #/profiles/5/post/5/addtags
 def addPostTags(request, profile_id, post_id):
+    """Adds Tags to a Post. Makes a user post."""
     profile = get_object_or_404(Profile, pk=profile_id)
     post = get_object_or_404(Post, pk=post_id)
     context = {'profile': profile, 'post': post}
@@ -186,6 +192,7 @@ def addPostTags(request, profile_id, post_id):
 
 #/profiles/createprofile/2
 def createProfile(request, species_id):
+    """Creates a new Profile of species type species_id."""
     if not siteHelpers.isPredatorPrey(species_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     if not request.session['session_lock']:
@@ -198,6 +205,7 @@ def createProfile(request, species_id):
     
 #/profiles/5/eatprofile
 def eatProfile(request, profile_id):
+    """Makes a selected Profile die and sends notice."""
     prey = get_object_or_404(Profile, pk=profile_id)
     predator = Profile.objects.get(id=request.session['session_id'])
     if profileHelpers.eatPrey(predator, prey):
@@ -206,6 +214,7 @@ def eatProfile(request, profile_id):
     
 #/profiles/5/graze
 def grazeProfile(request, profile_id):
+    """Consumes text from content of a randomly selected Post of current Profile."""
     profile = get_object_or_404(Profile.objects.prefetch_related('post_set'), pk=profile_id)
     targetPost = profile.post_set.exclude(tags=Tags.protected).order_by('?')
     if targetPost:
@@ -217,6 +226,7 @@ def grazeProfile(request, profile_id):
 
 #/profiles/5/post/5/graze
 def grazePost(request, profile_id, post_id):
+    """Consumes text from content of current Post."""
     targetPost = get_object_or_404(Post, pk=post_id)
     if targetPost:
         if profileHelpers.grazePost(Profile.objects.get(id=request.session['session_id']), targetPost):

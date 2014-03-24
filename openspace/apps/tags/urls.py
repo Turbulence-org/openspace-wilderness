@@ -10,7 +10,4 @@ urlpatterns = patterns('',
     #/tags/2/selecttrail
     url(r'^(?P<tag_id>\d+)/selecttrail/$',
         views.selectTrail, name='selectTrail'),
-    #/tags/deselecttrail/
-    url(r'^deselecttrail/$',
-        views.deselectTrail, name='deselectTrail'),
 )

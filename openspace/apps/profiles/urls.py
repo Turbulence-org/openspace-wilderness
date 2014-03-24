@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, url
 from apps.profiles import views
-from django.views.decorators.cache import cache_page
 
 urlpatterns = patterns('',
     #/profiles/
@@ -28,7 +27,7 @@ urlpatterns = patterns('',
         views.makeFriend, name='makeFriend'),
     #/profiles/5/post/5/
     url(r'^(?P<profile_id>\d+)/post/(?P<post_id>\d+)/$',
-        cache_page(views.singlePost, 60*60*96), name='singlePost'),
+        views.singlePost, name='singlePost'),
     #/profiles/5/post/5/addtags/
     url(r'^(?P<profile_id>\d+)/post/(?P<post_id>\d+)/addtags/$',
         views.addPostTags, name='addPostTags'),

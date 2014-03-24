@@ -50,7 +50,7 @@ def isPost(request):
         return True
 
 def isSelf(request):
-    """Returns True is current nav_id is same as session."""
+    """Returns True if current nav_id is same as session."""
     if int(request.session['nav_id']) == int(request.session['session_id']):
         return True
     return False
@@ -82,18 +82,19 @@ def isFriend(request):
     return False
 
 def isPredatorPrey(species):
-    """Returns True is Profile is species type forager or predator."""
+    """Returns True if Profile is species type forager or predator."""
     if int(species) == Species.forager or int(species) == Species.predator:
         return True
     return False
 
 def isAbandoned(species):
+    """Returns True if Profile is species type abandoned."""
     if int(species) == Species.abandoned:
         return True
     return False
 
 def isAllowedUserSpecies(species):
-    """Returns True is species is in the allowed list."""
+    """Returns True if species is in the allowed list."""
     allowed = [Species.visitor, Species.predator, Species.forager]
     if species in allowed:
         return True
@@ -106,10 +107,11 @@ def upInterest(obj):
         obj.save()
 
 def addTags(obj, tags):
-    """Adds tags from a supplied list to an object of type Profile or Post. Returns nothing.
+    """Adds tags from a supplied list to an object of type Profile or Post.
+    Returns nothing.
     
-    Creates a new Tag object if tag is new to the system. Will not create duplicates but will
-    add to interest rating of pre-existing Tag objects.
+    Creates a new Tag object if tag is new to the system.
+    Will not create duplicates but will add to interest of pre-existing Tag objects.
     """
     passed = ""
     for tag in tags:
@@ -131,7 +133,8 @@ def addTags(obj, tags):
     return passed[:-2]
 
 def bannerSelect(current):
-    """Returns a randomly selected banner image from collection of banners. Used in bruce_banner block."""
+    """Returns a randomly selected banner image from collection of banners.
+    Used in bruce_banner block."""
     bannerCount = returnCount('banners')
     selection = randint(1, bannerCount)
     while selection == current:
@@ -139,7 +142,8 @@ def bannerSelect(current):
     return selection
 
 def bgSelect(current):
-    """Returns next background image from collection of backgrounds. Used in background-style.html."""
+    """Returns next background image from collection of backgrounds.
+    Used in background-style.html."""
     bgCount = returnCount('backgrounds')
     if current > bgCount:
         return randint(1, bgCount)
@@ -166,7 +170,7 @@ def getTheMessage(request, key):
         'likepost': 'you like a post by [' + navName + ']',
         'tagprofile': 'you tagged [' + navName + ']',
         'tagpost': 'you tagged a post by [' + navName + ']',
-        'trail': 'you are now following the [' + request.session['selected_trail'] + '] trail'
+        'trail': 'you are now following [' + request.session['selected_trail'] + '] trail'
     }
     if key in (siteMessages):
         return siteMessages[key]

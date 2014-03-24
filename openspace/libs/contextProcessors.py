@@ -6,13 +6,13 @@ from libs.siteEnums import Species, Tags, System
 def siteProcessor(request):
     background = 'media/backgrounds/bg-' + str(request.session['page_background']) + '.jpg'
     request.session['page_banner'] = siteHelpers.bannerSelect(request.session['page_banner'])
-    banner_src = 'media/banners/banner-' + str(request.session['page_banner']) + '.jpg'
+    banner = 'media/banners/banner-' + str(request.session['page_banner']) + '.jpg'
     site_context = {
-        'human_key': 84990210,
+        'path': request.get_full_path(),
+        'human_key': System.humanKey,
         'is_human': request.session['is_human'],
         'background': background,
-        'banner_src': banner_src,
-        'path': request.get_full_path(),
+        'banner': banner,
         'mb_size': System.mb
     }
     return site_context
@@ -45,7 +45,7 @@ def sessionProcessor(request):
     # HANDLING FRIENDS
     session_context['is_friend'] = siteHelpers.isFriend(request)
 
-    #navigation
+    # NAVIAGTION
     nav_context = {}
     currentPosition = request.session['nav_position']
     nav_context['nav_position'] = currentPosition

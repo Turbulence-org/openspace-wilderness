@@ -13,22 +13,24 @@ from settings.common import STATIC_URL
 class Profile(models.Model):
     """Profile objects are the primary object employed in the openspace wilderness.
     
-    Profiles may have a profile image, an icon, and their related data
+    Profiles may have a profile image, an icon, and related data
     + may have sets of friends containing Profile objects
     + may have sets of tags containing Tag objects
     + have a one-to-one relationship with Post objects
     
     Required assignments:
-    fname, lname, gender, age
+    fname, lname, age
     
     Optional assignments:
-    location, blog_url, blog_id, last_login, friends, img_number, tags
+    location, blog_url, blog_id, last_login, friends, tags
     
     Default assignments:
+    gender = female(0)
     interest = 0
     energy = 1
+    meals = 0
     visible = True
-    species = Species.abandoned
+    species = abandoned(0)
     """
     
     position = models.PositiveIntegerField(max_length=9, default=1)
@@ -74,7 +76,9 @@ class Profile(models.Model):
             
     @property
     def speciesReadable(self):
-        if self.species == Species.system:
+        if self.species == Species.abandoned:
+            return 'abandoned'
+        elif self.species == Species.system:
             return 'system'
         elif self.species == Species.visitor:
             return 'visitor'
@@ -85,7 +89,7 @@ class Profile(models.Model):
         elif self.species == Species.dead:
             return 'dead'
         else:
-            return 'abandoned'
+            return 'unknown'
         
     @property
     def isActive(self):
@@ -132,7 +136,7 @@ class Profile(models.Model):
     
     @property
     def bestFriends(self):
-        return self.decentFriends[:12]
+        return self.decentFriends[:System.bestFriends]
     
     @property
     def topTags(self):
@@ -161,16 +165,17 @@ class Profile(models.Model):
 
 
 class Post(models.Model):
-    """Post objects contain content from recovered blogger blogs or activity from the active Profile types
+    """Post objects contain content from recovered blogger blogs
+    or activity from the active Profile types
     
     Required assignments:
-    post_profile = Profile object (one-to-one relationship), post_content
+    post_profile = Profile object, post_content
     
     Optional assignments:
     tags
     
     Default assignments:
-    date_published = timezone.now(), interest = 0
+    date_published = timezone.now(), interest = 0, just_posted = False
     """
 
     post_profile = models.ForeignKey(Profile)
@@ -211,7 +216,7 @@ class Comment(models.Model):
     """Comments are short content that can be created by a Profile and attached to a Post
     
     Required assignments:
-    comment_profile, comment_post, comment_content
+    comment_profile = Profile object, comment_post = Post object, comment_content
     
     Default assignments:
     date_published = timezone.now()
@@ -222,6 +227,9 @@ class Comment(models.Model):
     date_published = models.DateTimeField('date published',
         default=timezone.now())
     comment_content = models.TextField()
+    
+    class Meta:
+        ordering = ['-date_published']
     
     @cached_property
     def commentProfileId(self):

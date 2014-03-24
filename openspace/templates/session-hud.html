@@ -11,7 +11,7 @@
     </div>
     <div class="clear"></div>
     <div id="sessionAction" class="sessionBlock topLine">
-        <h4>{% if selected_trail != 'no' %}<a href="{% url 'tags:deselectTrail' %}">[ &ndash; ]</a> <a href="{% url 'tags:tag' selected_trail_id %}">[ {{ selected_trail }} ]</a>{% else %}no{% endif %} trail selected</h4>
+        <h4>{% if selected_trail != 'no' %}<a href="{% url 'tags:selectTrail' selected_trail_id %}">[ &ndash; ]</a> <a href="{% url 'tags:tag' selected_trail_id %}">[ {{ selected_trail }} ]</a>{% else %}no{% endif %} trail selected</h4>
         {% if not session_lock %}<div id="sessionBlock">
             <h4><a data-mark="speciesSelect" class="toggle">[ select species ]</a></h4>
             <div id="speciesSelect" class="hiddenToggle"><br/><h4>eat active profiles - <a href="{% url 'profiles:createProfile' 3 %}">[ predator ]</a><br/>
