@@ -18,21 +18,21 @@ def randomProfile(profile, trail):
     if profile.isPredator:
         prey = randomEncounter()
         if prey:
-            return prey
+            return prey.id
     if trail:
         if Profile.objects.filter(tags=trail).count() > 1:
             selectedProfile = Profile.objects.exclude(visible=False).filter(tags=trail).order_by('?')[0]
     else:
         if Profile.objects.count() > 1:
             selectedProfile = Profile.objects.exclude(visible=False).order_by('?')[0]
-    return selectedProfile.id
+    return selectedProfile.position
 
 def nextProfile(currentId, profile, trail):
     """Gets and returns a Profile id greater than current position based on selected Trail."""
     if profile.isPredator:
         prey = randomEncounter()
         if prey:
-            return prey
+            return prey.id
     if trail:
         next = Profile.objects.filter(tags=trail).filter(position__gt=currentId).order_by('position')[0:1]
         if not next:
@@ -48,7 +48,7 @@ def previousProfile(currentId, profile, trail):
     if profile.isPredator:
         prey = randomEncounter()
         if prey:
-            return prey
+            return prey.id
     if trail:
         prev = Profile.objects.filter(tags=trail).filter(position__lt=currentId).order_by('-position')[0:1]
         if not prev:
