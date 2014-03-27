@@ -189,11 +189,12 @@ def parkDataProcessor():
         'predator_pop': Profile.objects.filter(species=Species.predator).count(),
         'forager_pop': Profile.objects.filter(species=Species.forager).count(),
         'dead_pop': Profile.objects.filter(species=Species.dead).count(),
+        'visitor_pop': Profile.objects.filter(species=Species.visitor).count(),
         'percent_tagged': quickIntPercent(profileCount, Profile.objects.annotate(num_tags=Count('tags')).filter(num_tags__gt=0).count()),
         'percent_dead': quickIntPercent(profileCount, Profile.objects.filter(species=Species.dead).count()),
         'percent_grazed': grazedProcessor(),
         'protected_posts': protectedCount,
-        'percent_protected': quickIntPercent(postCount, protectedCount) 
+        'percent_protected': quickIntPercent(postCount, protectedCount)
     }
     return data
 
