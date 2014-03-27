@@ -37,7 +37,7 @@
         <br/>
         <p><em>"We are happy to answer any questions you may have. Thank you for visiting the openspace wilderness." - Ranger L</em></p>
         
-        {% for post in ranger_posts %}<a href="{% url 'profiles:singlePost' ranger_id post.id %}"><h5>{{ post.date_published }}</h5></a>
+        {% for post in ranger_posts %}<a href="{% url 'profiles:singlePost' ranger_id post.id %}"><h5 class="strong"><em>{{ post.date_published }}</em></h5></a>
         <p>{{ post.post_content }}</p>{% endfor %}
         </div>
         <div class="clear"></div>
