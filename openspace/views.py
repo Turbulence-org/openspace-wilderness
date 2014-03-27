@@ -65,7 +65,8 @@ def helpPage(request):
     ranger = Profile.objects.filter(species=Species.system)[0]
     context = {
         'ranger_id': ranger.id,
-        'ranger_icon': ranger.prettyPic
+        'ranger_icon': ranger.prettyPic,
+        'ranger_posts': ranger.post_set.all().order_by('-date_published')[:3]
     }
     return render(request, 'help.html', context)
 
