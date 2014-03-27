@@ -239,5 +239,9 @@ class Comment(models.Model):
     def commentPostId(self):
         return self.comment_post_id
     
+    @cached_property
+    def commentPostProfileId(self):
+        return Post.objects.get(id=self.comment_post_id).post_profile_id
+    
     def __unicode__(self):
         return str(self.comment_profile) + ' / ' + self.comment_content[:11]

@@ -96,7 +96,7 @@
     </div>
     <div class="content">
         {% for comment in recent_comments %}
-            <a href="{% url 'profiles:singlePost' comment.commentProfileId comment.commentPostId %}"><div class="wideListing tight">
+            <a href="{% url 'profiles:singlePost' comment.commentPostProfileId comment.commentPostId %}"><div class="wideListing tight">
                 <h5>{{ comment.comment_profile }}</h5>
                 <h5>{{ comment.date_published }}</h5>
                 <p>{{ comment.comment_content }}</p>
