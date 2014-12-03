@@ -2,7 +2,7 @@ from django.utils import timezone
 from apps.profiles.models import Profile
 from apps.tags.models import Tag
 from libs.profileHelpers import makeProfile, makeBirthPost, makeFriends, assignImages, makeTaggedPost, makeAnonymous
-from libs.siteEnums import Species, Gender, Tags
+from libs.siteEnums import Species, System, Gender, Tags
 import data_path
 
 def populate(pop):
